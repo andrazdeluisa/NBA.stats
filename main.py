@@ -2,7 +2,8 @@
 import bottle
 
 # uvozimo podarke za povezavo
-import auth_public as auth
+import auth_public
+import auth
 
 # uvozimo psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -149,6 +150,7 @@ def register_post():
 
 
 def dodeli_pravice():
+    cur.execute("GRANT CONNECT ON DATABASE sem2019_sarabi TO andrazdl; GRANT CONNECT ON DATABASE sem2019_sarabi TO tadejm; GRANT CONNECT ON DATABASE sem2019_sarabi TO javnost;")
     cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
     conn.commit()
     
@@ -158,7 +160,7 @@ def dodeli_pravice():
 # GLAVNI PROGRAM
 
 # priklopimo se na bazo
-conn = psycopg2.connect(database=auth.db, host=auth.host, user='sarabi', password='fhx7lo1l')
+conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password)
 conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) # onemogočimo transakcije
 cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor) 
 
