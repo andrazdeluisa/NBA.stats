@@ -234,17 +234,31 @@ def komentar_delete(tid):
     """Zbriši komentar."""
     (username, ime) = get_user()
     # DELETE napišemo tako, da deluje samo, če je avtor komentarja prijavljeni uporabnik
-    r = baza.execute("DELETE FROM trac WHERE id=? AND avtor=?", [tid, username]).rowcount;
+    r = baza.execute("DELETE FROM trac WHERE id=? AND avtor=?", [tid, username]).rowcount
     if not r == 1:
         return "Vi ste hacker."
     else:
         set_sporocilo('alert-success', "Vaš komentar je IZBRISAN.")
         return bottle.redirect("/")
 
+###############################################
+
+@bottle.get('/ekipe/')
+def ekipe_get():
+    cur.execute("SELECT * FROM ekipa")
+    ekipe = cur.fetchall()
+    napaka='napaka'
+    #return bottle.template('ekipe.html', ekipe=ekipe, napaka0=None, napaka=napaka, username=username)
+    return bottle.template('ekipe.html',napaka=None)
+
+@bottle.post("/ekipe/")
+def ekipe_post():
+    username=get_user()
+
 def dodeli_pravice():
     cur.execute("GRANT CONNECT ON DATABASE sem2019_sarabi TO andrazdl; GRANT CONNECT ON DATABASE sem2019_sarabi TO tadejm; GRANT CONNECT ON DATABASE sem2019_sarabi TO javnost;")
     cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
-    conn.commit()
+    baza.commit()
     
 
 ###############################################
@@ -252,9 +266,9 @@ def dodeli_pravice():
 # GLAVNI PROGRAM
 
 # priklopimo se na bazo
-conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password)
-conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) # onemogočimo transakcije
-cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+baza = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password)
+baza.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) # onemogočimo transakcije
+cur = baza.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 # poženemo strežnik na portu 8010, glej http://localhost:8010/
 bottle.run(host='localhost', port=8010)
