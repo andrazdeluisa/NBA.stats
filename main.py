@@ -77,6 +77,7 @@ def main():
     (username, ime) = get_user()
     # Morebitno sporočilo za uporabnika
     sporocilo = get_sporocilo()
+    dodeli_pravice()
     # Seznam zadnjih 10 tračev
     ts = traci()
     # Vrnemo predlogo za glavno stran
@@ -239,6 +240,10 @@ def komentar_delete(tid):
         set_sporocilo('alert-success', "Vaš komentar je IZBRISAN.")
         return bottle.redirect("/")
 
+def dodeli_pravice():
+    cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
+    conn.commit()
+    
 
 ###############################################
 
