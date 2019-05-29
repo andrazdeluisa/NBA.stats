@@ -39,7 +39,7 @@ def get_sporocilo():
 
 
 
-def get_user(auto_login = True):
+def get_user(auto_login = False):
     """Poglej cookie in ugotovi, kdo je prijavljeni uporabnik,
        vrni njegov username in ime. Če ni prijavljen, presumeri
        na stran za prijavo ali vrni None (advisno od auto_login).
@@ -49,7 +49,7 @@ def get_user(auto_login = True):
     # Preverimo, ali ta uporabnik obstaja
     if username is not None:
         c = baza.cursor()
-        c.execute("SELECT username, ime FROM uporabnik WHERE username=?",
+        c.execute("SELECT username, ime FROM uporabnik WHERE username=%s",
                   [username])
         r = c.fetchone()
         c.close ()
@@ -75,25 +75,21 @@ def main():
     """Glavna stran."""
     # Iz cookieja dobimo uporabnika (ali ga preusmerimo na login, če
     # nima cookija)
-    (username, ime) = get_user()
-    # Morebitno sporočilo za uporabnika
-    sporocilo = get_sporocilo()
     dodeli_pravice()
+    #(username, ime) = get_user()
+    # Morebitno sporočilo za uporabnika
+    #sporocilo = get_sporocilo()
     # Seznam zadnjih 10 tračev
-    ts = traci()
+    #ts = traci()
     # Vrnemo predlogo za glavno stran
-    return bottle.template("main.html",
-                           ime=ime,
-                           username=username,
-                           traci=ts,
-                           sporocilo=sporocilo)
+    return bottle.template("login.html", napaka=None, username='uporabnik')
 
 @bottle.get("/login/")
 def login_get():
     """Serviraj formo za login."""
     return bottle.template("login.html",
                            napaka=None,
-                           username=None)
+                           username='uporabnik')
 
 @bottle.get("/logout/")
 def logout():
@@ -139,7 +135,7 @@ def register_post():
     password2 = bottle.request.forms.password2
     # Ali uporabnik že obstaja?
     c = baza.cursor()
-    c.execute("SELECT 1 FROM uporabnik WHERE username=?", [username])
+    c.execute("SELECT 1 FROM uporabnik WHERE username=%s", [username])
     if c.fetchone():
         # Uporabnik že obstaja
         return bottle.template("register.html",
@@ -245,28 +241,39 @@ def komentar_delete(tid):
 
 @bottle.get('/ekipe/')
 def ekipe_get():
-    cur.execute("SELECT * FROM ekipa")
+    cur.execute("SELECT ime, zmage, porazi FROM ekipa")
     ekipe = cur.fetchall()
     napaka='napaka'
-    #return bottle.template('ekipe.html', ekipe=ekipe, napaka0=None, napaka=napaka, username=username)
-    return bottle.template('ekipe.html',napaka=None)
+    # return bottle.template('ekipe.html', ekipe=ekipe, napaka0=None, napaka=napaka, username=username)
+    return bottle.template('ekipe.html', seznam_ekip=ekipe, napaka=None)
 
 @bottle.post("/ekipe/")
 def ekipe_post():
+    username=get_user()
+
+@bottle.get('/igralci/')
+def igralci_get():
+    cur.execute("SELECT ime, pozicija, starost FROM igralec")
+    igralci = cur.fetchall()
+    napaka='napaka'
+    # return bottle.template('ekipe.html', ekipe=ekipe, napaka0=None, napaka=napaka, username=username)
+    return bottle.template('igralci.html', seznam_igralcev=igralci, napaka=None)
+
+@bottle.post("/igralci/")
+def igralci_post():
     username=get_user()
 
 def dodeli_pravice():
     cur.execute("GRANT CONNECT ON DATABASE sem2019_sarabi TO andrazdl; GRANT CONNECT ON DATABASE sem2019_sarabi TO tadejm; GRANT CONNECT ON DATABASE sem2019_sarabi TO javnost;")
     cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
     baza.commit()
-    
 
 ###############################################
 
 # GLAVNI PROGRAM
 
 # priklopimo se na bazo
-baza = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password)
+baza = psycopg2.connect(database=auth.db, host=auth.host, user='sarabi', password='fhx7lo1l')
 baza.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) # onemogočimo transakcije
 cur = baza.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
