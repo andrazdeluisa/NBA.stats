@@ -56,6 +56,7 @@ def static(filename):
        /static/..."""
     return bottle.static_file(filename, root=static_dir)
 
+#############################################################################################################
 
 @bottle.route("/")
 def main():
@@ -74,6 +75,8 @@ def main():
                            username=username,
                            traci=ts,
                            sporocilo=sporocilo)
+
+#############################################################################################################
 
 @bottle.get("/login/")
 def login_get():
