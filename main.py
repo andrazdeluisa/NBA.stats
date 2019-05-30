@@ -26,20 +26,7 @@ def password_md5(s):
     h.update(s.encode('utf-8'))
     return h.hexdigest()
 
-
-# Funkcija, ki v cookie spravi sporocilo
-def set_sporocilo(tip, vsebina):
-    bottle.response.set_cookie('message', (tip, vsebina), path='/', secret=secret)
-
-# Funkcija, ki iz cookija dobi sporočilo, če je
-def get_sporocilo():
-    sporocilo = bottle.request.get_cookie('message', default=None, secret=secret)
-    bottle.response.delete_cookie('message')
-    return sporocilo
-
-
-
-def get_user(auto_login = False):
+def get_user(auto_login = True):
     """Poglej cookie in ugotovi, kdo je prijavljeni uporabnik,
        vrni njegov username in ime. Če ni prijavljen, presumeri
        na stran za prijavo ali vrni None (advisno od auto_login).
@@ -49,7 +36,7 @@ def get_user(auto_login = False):
     # Preverimo, ali ta uporabnik obstaja
     if username is not None:
         c = baza.cursor()
-        c.execute("SELECT username, ime FROM uporabnik WHERE username=%s",
+        c.execute("SELECT username, ime FROM uporabnik WHERE username=?",
                   [username])
         r = c.fetchone()
         c.close ()
@@ -75,21 +62,25 @@ def main():
     """Glavna stran."""
     # Iz cookieja dobimo uporabnika (ali ga preusmerimo na login, če
     # nima cookija)
-    dodeli_pravice()
-    #(username, ime) = get_user()
+    (username, ime) = get_user()
     # Morebitno sporočilo za uporabnika
-    #sporocilo = get_sporocilo()
+    sporocilo = get_sporocilo()
+    dodeli_pravice()
     # Seznam zadnjih 10 tračev
-    #ts = traci()
+    ts = traci()
     # Vrnemo predlogo za glavno stran
-    return bottle.template("login.html", napaka=None, username='uporabnik')
+    return bottle.template("main.html",
+                           ime=ime,
+                           username=username,
+                           traci=ts,
+                           sporocilo=sporocilo)
 
 @bottle.get("/login/")
 def login_get():
     """Serviraj formo za login."""
     return bottle.template("login.html",
                            napaka=None,
-                           username='uporabnik')
+                           username=None)
 
 @bottle.get("/logout/")
 def logout():
@@ -135,7 +126,7 @@ def register_post():
     password2 = bottle.request.forms.password2
     # Ali uporabnik že obstaja?
     c = baza.cursor()
-    c.execute("SELECT 1 FROM uporabnik WHERE username=%s", [username])
+    c.execute("SELECT 1 FROM uporabnik WHERE username=?", [username])
     if c.fetchone():
         # Uporabnik že obstaja
         return bottle.template("register.html",
@@ -157,85 +148,6 @@ def register_post():
         bottle.response.set_cookie('username', username, path='/', secret=secret)
         bottle.redirect("/")
 
-###############################################
-
-def pretty_date(time):
-    """
-    Predelaj čas (v formatu Unix epoch) v opis časa, na primer
-    'pred 4 minutami', 'včeraj', 'pred 3 tedni' ipd.
-    """
-
-    now = datetime.now()
-    if type(time) is int:
-        diff = now - datetime.fromtimestamp(time)
-    elif isinstance(time,datetime):
-        diff = now - time 
-    elif not time:
-        diff = now - now
-    second_diff = diff.seconds
-    day_diff = diff.days
-
-    if day_diff < 0:
-        return ''
-
-    if day_diff == 0:
-        if second_diff < 10:
-            return "zdaj"
-        if second_diff < 60:
-            return "pred " + str(second_diff) + " sekundami"
-        if second_diff < 120:
-            return  "pred minutko"
-        if second_diff < 3600:
-            return "pred " + str( second_diff // 60 ) + " minutami"
-        if second_diff < 7200:
-            return "pred eno uro"
-        if second_diff < 86400:
-            return "pred " + str( second_diff // 3600 ) + " urami"
-    if day_diff == 1:
-        return "včeraj"
-    if day_diff < 7:
-        return "pred " + str(day_diff) + " dnevi"
-    if day_diff < 31:
-        return "pred " + str(day_diff//7) + " tedni"
-    if day_diff < 365:
-        return "pred " + str(day_diff//30) + " meseci"
-    return "pred " + str(day_diff//365) + " leti"
-
-
-@bottle.post("/trac/new/")
-def new_trac():
-    """Ustvari nov trač."""
-    # Kdo je avtor trača?
-    (username, ime) = get_user()
-    # Vsebina trača
-    trac = bottle.request.forms.trac
-    c = baza.cursor()
-    c.execute("INSERT INTO trac (avtor, vsebina) VALUES (?,?)",
-              [username, trac])
-    # Presumerimo na glavno stran
-    return bottle.redirect("/")
-
-
-@bottle.post("/komentar/<tid:int>/")
-def komentar(tid):
-    """Vnesi nov komentar."""
-    (username, ime) = get_user()
-    komentar = bottle.request.forms.komentar
-    baza.execute("INSERT INTO komentar (vsebina, trac, avtor) VALUES (?, ?, ?)",
-                 [komentar, tid, username])
-    bottle.redirect("/#trac-{0}".format(tid))
-
-@bottle.route("/trac/<tid:int>/delete/")
-def komentar_delete(tid):
-    """Zbriši komentar."""
-    (username, ime) = get_user()
-    # DELETE napišemo tako, da deluje samo, če je avtor komentarja prijavljeni uporabnik
-    r = baza.execute("DELETE FROM trac WHERE id=? AND avtor=?", [tid, username]).rowcount
-    if not r == 1:
-        return "Vi ste hacker."
-    else:
-        set_sporocilo('alert-success', "Vaš komentar je IZBRISAN.")
-        return bottle.redirect("/")
 
 ###############################################
 
@@ -244,8 +156,8 @@ def ekipe_get():
     cur.execute("SELECT ime, zmage, porazi FROM ekipa")
     ekipe = cur.fetchall()
     napaka='napaka'
-    # return bottle.template('ekipe.html', ekipe=ekipe, napaka0=None, napaka=napaka, username=username)
-    return bottle.template('ekipe.html', seznam_ekip=ekipe, napaka=None)
+
+    return bottle.template('ekipe.html', seznam_ekip= ekipe, napaka=None)
 
 @bottle.post("/ekipe/")
 def ekipe_post():
@@ -263,17 +175,40 @@ def igralci_get():
 def igralci_post():
     username=get_user()
 
+@bottle.get('/trenerji/')
+def trenerji_get():
+    cur.execute("SELECT ime, ekipa, zmage, porazi FROM trener")
+    trenerji = cur.fetchall()
+    napaka='napaka'
+    return bottle.template('trenerji.html', seznam_trenerjev = trenerji, napaka=None)
+
+@bottle.post("/ekipe/")
+def trenerji_post():
+    username=get_user()
+
+@bottle.get('/lastniki/')
+def lastniki_get():
+    cur.execute("SELECT ime, ekipa, premozenje FROM lastnik")
+    lastniki = cur.fetchall()
+    napaka='napaka'
+    return bottle.template('lastniki.html', seznam_lastnikov = lastniki, napaka=None)
+
+@bottle.post("/ekipe/")
+def lastniki_post():
+    username=get_user()
+    
 def dodeli_pravice():
     cur.execute("GRANT CONNECT ON DATABASE sem2019_sarabi TO andrazdl; GRANT CONNECT ON DATABASE sem2019_sarabi TO tadejm; GRANT CONNECT ON DATABASE sem2019_sarabi TO javnost;")
     cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
     baza.commit()
+    
 
 ###############################################
 
 # GLAVNI PROGRAM
 
 # priklopimo se na bazo
-baza = psycopg2.connect(database=auth.db, host=auth.host, user='sarabi', password='fhx7lo1l')
+baza = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password)
 baza.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) # onemogočimo transakcije
 cur = baza.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
