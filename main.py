@@ -36,7 +36,7 @@ def get_user(auto_login = True):
     # Preverimo, ali ta uporabnik obstaja
     if username is not None:
         c = baza.cursor()
-        c.execute("SELECT username, ime FROM uporabnik WHERE username=?",
+        c.execute("SELECT username, ime FROM uporabnik WHERE username=%s",
                   [username])
         r = c.fetchone()
         c.close ()
@@ -83,7 +83,7 @@ def login_get():
     """Serviraj formo za login."""
     return bottle.template("login.html",
                            napaka=None,
-                           username=None)
+                           username='')
 
 @bottle.get("/logout/")
 def logout():
@@ -116,7 +116,7 @@ def login_post():
 def register_get():
     """Prikaži formo za registracijo."""
     return bottle.template("register.html", 
-                           username=None,
+                           username='',
                            ime=None,
                            napaka=None)
 
@@ -129,7 +129,7 @@ def register_post():
     password2 = bottle.request.forms.password2
     # Ali uporabnik že obstaja?
     c = baza.cursor()
-    c.execute("SELECT 1 FROM uporabnik WHERE username=?", [username])
+    c.execute("SELECT 1 FROM uporabnik WHERE username=%s", [username])
     if c.fetchone():
         # Uporabnik že obstaja
         return bottle.template("register.html",
@@ -145,7 +145,8 @@ def register_post():
     else:
         # Vse je v redu, vstavi novega uporabnika v bazo
         password = password_md5(password1)
-        c.execute("INSERT INTO uporabnik (username, ime, password) VALUES (?, ?, ?)",
+        print('tukaj sem')
+        c.execute("INSERT INTO uporabnik (username, ime, password) VALUES (%s, %s, %s)",
                   (username, ime, password))
         # Daj uporabniku cookie
         bottle.response.set_cookie('username', username, path='/', secret=secret)
@@ -156,7 +157,7 @@ def register_post():
 
 @bottle.get('/ekipe/')
 def ekipe_get():
-    cur.execute("SELECT ime, zmage, porazi FROM ekipa")
+    cur.execute("SELECT ime, zmage, porazi FROM ekipa ORDER BY zmage DESC")
     ekipe = cur.fetchall()
     napaka='napaka'
 
@@ -194,7 +195,18 @@ def lastniki_get():
     cur.execute("SELECT ime, ekipa, premozenje FROM lastnik")
     lastniki = cur.fetchall()
     napaka='napaka'
-    return bottle.template('lastniki.html', seznam_lastnikov = lastniki, napaka=None)
+    return bottle.template('lastniki.html', seznam_lastnikov=lastniki, napaka=None)
+
+@bottle.post("/ekipe/")
+def lastniki_post():
+    username=get_user()
+
+@bottle.get('/uspesni-lastniki/')
+def lastniki_get():
+    cur.execute("SELECT lastnik.ime, lastnik.premozenje, ekipa.zmage, ekipa.ime as ekipa FROM lastnik JOIN ekipa ON lastnik.ekipa=ekipa.kratica WHERE ekipa.zmage>42 ORDER BY ekipa.zmage desc;")
+    lastniki = cur.fetchall()
+    napaka='napaka'
+    return bottle.template('uspesni-lastniki.html', seznam_lastnikov=lastniki, napaka=None)
 
 @bottle.post("/ekipe/")
 def lastniki_post():

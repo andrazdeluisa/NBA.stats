@@ -1,20 +1,22 @@
-<div class="row mb-2 no-gutters border rounded overflow-hidden shadow-sm h-md-600 position-relative" style="float:left; width:80%; border:1px solid; padding: 20px;">
-    <h1>Ekipe:</h1>
+<div class="row mb-2 no-gutters border rounded overflow-hidden shadow-sm h-md-600 position-relative" style="float:left; width:90%; border:1px solid; padding: 20px;">
+    <h1>Lastniki ekip z vsaj 50% izkupičkom zmag:</h1>
     <div style="height:500px;overflow-y:auto;overflow-y:auto;">
         <table class="table table-bordered table-hover">
            <thead class="thead-light">
             <tr>
                <th scope="col">Ime</th>
+               <th scope="col">Premoženje</th>
                <th scope="col">Zmage</th>
-               <th scope="col">Porazi</th>
+               <th scope="col">Ekipa</th>
             </tr>
             </thead>
             <tbody>
-            %for (ime,zmage,porazi) in seznam_ekip:
+            %for (ime, premozenje, zmage, ekipa) in seznam_lastnikov:
               <tr>
                  <td>{{ime}}</td>
+                 <td>{{premozenje}}</td>
                  <td>{{zmage}}</td>
-                 <td>{{porazi}}</td>
+                 <td>{{ekipa}}</td>
               </tr>
             %end
             </tbody>
