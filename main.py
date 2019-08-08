@@ -121,7 +121,6 @@ def register_get():
 def register_post():
     """Registriraj novega uporabnika."""
     username = bottle.request.forms.username
-    ime = bottle.request.forms.ime
     password1 = bottle.request.forms.password1
     password2 = bottle.request.forms.password2
     # Ali uporabnik že obstaja?
@@ -131,20 +130,18 @@ def register_post():
         # Uporabnik že obstaja
         return bottle.template("registracija.html",
                                username=username,
-                               ime=ime,
                                napaka='To uporabniško ime je že zavzeto')
     elif not password1 == password2:
-        # Geslo se ne ujemata
+        # Gesli se ne ujemata
         return bottle.template("registracija.html",
                                username=username,
-                               ime=ime,
                                napaka='Gesli se ne ujemata')
     else:
         # Vse je v redu, vstavi novega uporabnika v bazo
         password = password_md5(password1)
         print('tukaj sem')
-        c.execute("INSERT INTO uporabnik (username, ime, password) VALUES (%s, %s, %s)",
-                  (username, ime, password))
+        c.execute("INSERT INTO uporabnik (username, password) VALUES (%s, %s)",
+                  (username, password))
         # Daj uporabniku cookie
         bottle.response.set_cookie('username', username, path='/zacetna_stran/', secret=secret)
         bottle.redirect("/zacetna_stran/")
