@@ -1,0 +1,21 @@
+%rebase('base.html', naslov='Registracija')
+
+<body class="text-center">
+<form class="form-signin" method="post">
+  <a href="/">
+  <img class="mb-4" src="/static/skakalec.png" alt="" style="width:128px;height:128px;">
+  </a>
+  <h1 class="h3 mb-3 font-weight-normal">Registracija</h1>
+  <label for="inputUsername" class="sr-only">Uporabniško ime</label>
+  <input type="username" id="inputUsername" class="form-control" placeholder="Uporabniško ime" name="username" required autofocus>
+  <label for="inputPassword" class="sr-only">Geslo</label>
+  <input type="password" id="inputPassword1" class="form-control" placeholder="Geslo" name="password1" required>
+  <label for="inputPassword" class="sr-only">Ponovno vnesite geslo</label>
+  <input type="password" id="inputPassword2" class="form-control" placeholder="Ponovno vnesite geslo" name="password2" required>
+  
+  %if napaka:
+        <div class="alert alert-warning">{{napaka}}</div>
+  %end
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Registriraj se</button>
+</form>
+</body>
