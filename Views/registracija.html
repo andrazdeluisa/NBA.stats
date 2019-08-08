@@ -1,10 +1,8 @@
-%rebase('base.html', naslov='Registracija')
+%rebase('Form base.html', naslov='Registracija')
 
 <body class="text-center">
-<form class="form-signin" method="post">
-  <a href="/">
-  <img class="mb-4" src="/static/skakalec.png" alt="" style="width:128px;height:128px;">
-  </a>
+<div align="center">
+<form class="form-signin text-center" method="post" style="width: 30%;margin-top: 5cm">
   <h1 class="h3 mb-3 font-weight-normal">Registracija</h1>
   <label for="inputUsername" class="sr-only">Uporabniško ime</label>
   <input type="username" id="inputUsername" class="form-control" placeholder="Uporabniško ime" name="username" required autofocus>
@@ -18,4 +16,5 @@
   %end
   <button class="btn btn-lg btn-primary btn-block" type="submit">Registriraj se</button>
 </form>
+</div>
 </body>
