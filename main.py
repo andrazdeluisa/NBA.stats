@@ -60,7 +60,7 @@ def static(filename):
 
 @bottle.route("/")
 def main():
-    return bottle.template("zacetna_stran.html")
+    return bottle.template("zacetna_stran.html", username='')
 
 #############################################################################################################
 
@@ -71,10 +71,11 @@ def login_get():
                            napaka=None,
                            username='')
 
+
 @bottle.get("/zacetna_stran/")
 def zacetnastran_get():
     """Serviraj formo za zacetno."""
-    return bottle.template("zacetna_stran.html")
+    return bottle.template("zacetna_stran.html", username='')
 
 @bottle.get("/logout/")
 def logout():
