@@ -46,29 +46,33 @@
   <body>
     <header>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="">NBA.stats</a>
+    <a class="navbar-brand" href="/zacetna_stran/">NBA.stats</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="ekipe">Ekipe<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/ekipe/">Ekipe<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="igralci">Igralci<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/igralci/">Igralci<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="trenerji">Trenerji<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/trenerji/">Trenerji<span class="sr-only">(current)</span></a>
         </li>
       </ul>
       <form class="form-inline mt-2 mt-md-0">
         
         % if username:
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Odjava</button>
+        <li class="nav-item active">
+          <a class="btn btn-outline-success my-2 my-sm-0" href="/odjava/">Odjava<span class="sr-only">(current)</span></a>
+        </li>
 
         % else:
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Prijava</button>
+        <li class="nav-item active">
+          <a class="btn btn-outline-success my-2 my-sm-0" href="/prijava/">Prijava<span class="sr-only">(current)</span></a>
+        </li>
 
         % end
 
@@ -120,8 +124,6 @@ function topFunction() {
 }
 </script>
   <script src="/static/js/bootstrap.js"></script>
-
-<button onclick="topFunction()" id="myBtn" title="Go to top">Vrni se na začetek</button>
 
 </body>
 </html>

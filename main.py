@@ -65,10 +65,10 @@ def main():
 
 #############################################################################################################
 
-@bottle.get("/login/")
+@bottle.get("/prijava/")
 def login_get():
     """Serviraj formo za login."""
-    return bottle.template("login.html",
+    return bottle.template("prijava.html",
                            napaka=None,
                            username='')
 
@@ -79,13 +79,8 @@ def zacetnastran_get():
     """Serviraj formo za zacetno."""
     return bottle.template("zacetna_stran.html", username=username)
 
-@bottle.get("/logout/")
-def logout():
-    """Pobriši cookie in preusmeri na login."""
-    bottle.response.delete_cookie('username')
-    bottle.redirect('/login/')
 
-@bottle.post("/login/")
+@bottle.post("/prijava/")
 def login_post():
     """Obdelaj izpolnjeno formo za prijavo"""
     # Uporabniško ime, ki ga je uporabnik vpisal v formo
@@ -98,28 +93,31 @@ def login_post():
               [username, password])
     if c.fetchone() is None:
         # Username in geslo se ne ujemata
-        return bottle.template("login.html",
+        return bottle.template("prijava.html",
                                napaka="Nepravilna prijava",
                                username=username)
     else:
         # Vse je v redu, nastavimo cookie in preusmerimo na glavno stran
         bottle.response.set_cookie('username', username, path='/', secret=secret)
-        bottle.redirect("/")
+        bottle.redirect("/zacetna_stran/")
 
-@bottle.post("/zacetna_stran/")
-def login_post():
-    return bottle.template("zacetna_stran.html")
+@bottle.get("/logout/")
+def logout():
+    """Pobriši cookie in preusmeri na login."""
+    bottle.response.delete_cookie('username')
+    bottle.redirect('/login/')
+        
     
 
-@bottle.get("/register/")
+@bottle.get("/registracija/")
 def register_get():
     """Prikaži formo za registracijo."""
-    return bottle.template("register.html", 
+    return bottle.template("registracija.html", 
                            username='',
                            ime=None,
                            napaka=None)
 
-@bottle.post("/register/")
+@bottle.post("/registracija/")
 def register_post():
     """Registriraj novega uporabnika."""
     username = bottle.request.forms.username
@@ -131,13 +129,13 @@ def register_post():
     c.execute("SELECT 1 FROM uporabnik WHERE username=%s", [username])
     if c.fetchone():
         # Uporabnik že obstaja
-        return bottle.template("register.html",
+        return bottle.template("registracija.html",
                                username=username,
                                ime=ime,
                                napaka='To uporabniško ime je že zavzeto')
     elif not password1 == password2:
         # Geslo se ne ujemata
-        return bottle.template("register.html",
+        return bottle.template("registracija.html",
                                username=username,
                                ime=ime,
                                napaka='Gesli se ne ujemata')
@@ -148,8 +146,8 @@ def register_post():
         c.execute("INSERT INTO uporabnik (username, ime, password) VALUES (%s, %s, %s)",
                   (username, ime, password))
         # Daj uporabniku cookie
-        bottle.response.set_cookie('username', username, path='/', secret=secret)
-        bottle.redirect("/")
+        bottle.response.set_cookie('username', username, path='/zacetna_stran/', secret=secret)
+        bottle.redirect("/zacetna_stran/")
 
 
 ###############################################
