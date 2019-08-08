@@ -54,6 +54,7 @@ def get_user(auto_login = True):
 def static(filename):
     """Splošna funkcija, ki servira vse statične datoteke iz naslova
        /static/..."""
+    static_dir = '/Static'
     return bottle.static_file(filename, root=static_dir)
 
 #############################################################################################################
@@ -74,8 +75,9 @@ def login_get():
 
 @bottle.get("/zacetna_stran/")
 def zacetnastran_get():
+    username = bottle.request.get_cookie('username', secret=secret)
     """Serviraj formo za zacetno."""
-    return bottle.template("zacetna_stran.html", username='')
+    return bottle.template("zacetna_stran.html", username=username)
 
 @bottle.get("/logout/")
 def logout():
