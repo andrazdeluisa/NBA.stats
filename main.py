@@ -45,7 +45,7 @@ def get_user(auto_login = True):
             return r
     # Če pridemo do sem, uporabnik ni http://localhost:8010/prijavljen, naredimo redirect
     if auto_login:
-        bottle.redirect('/login/')
+        bottle.redirect('/zacetna_stran/')
     else:
         return None
 
@@ -60,21 +60,7 @@ def static(filename):
 
 @bottle.route("/")
 def main():
-    """Glavna stran."""
-    # Iz cookieja dobimo uporabnika (ali ga preusmerimo na login, če
-    # nima cookija)
-    (username, ime) = get_user()
-    # Morebitno sporočilo za uporabnika
-    sporocilo = get_sporocilo()
-    dodeli_pravice()
-    # Seznam zadnjih 10 tračev
-    ts = traci()
-    # Vrnemo predlogo za glavno stran
-    return bottle.template("main.html",
-                           ime=ime,
-                           username=username,
-                           traci=ts,
-                           sporocilo=sporocilo)
+    return bottle.template("zacetna_stran.html")
 
 #############################################################################################################
 
@@ -84,6 +70,11 @@ def login_get():
     return bottle.template("login.html",
                            napaka=None,
                            username='')
+
+@bottle.get("/zacetna_stran/")
+def zacetnastran_get():
+    """Serviraj formo za zacetno."""
+    return bottle.template("zacetna_stran.html")
 
 @bottle.get("/logout/")
 def logout():
@@ -111,6 +102,11 @@ def login_post():
         # Vse je v redu, nastavimo cookie in preusmerimo na glavno stran
         bottle.response.set_cookie('username', username, path='/', secret=secret)
         bottle.redirect("/")
+
+@bottle.post("/zacetna_stran/")
+def login_post():
+    return bottle.template("zacetna_stran.html")
+    
 
 @bottle.get("/register/")
 def register_get():
@@ -155,7 +151,7 @@ def register_post():
 
 ###############################################
 
-@bottle.get('/ekipe/')
+""" @bottle.get('/ekipe/')
 def ekipe_get():
     cur.execute("SELECT ime, zmage, porazi FROM ekipa ORDER BY zmage DESC")
     ekipe = cur.fetchall()
@@ -216,7 +212,7 @@ def dodeli_pravice():
     cur.execute("GRANT CONNECT ON DATABASE sem2019_sarabi TO andrazdl; GRANT CONNECT ON DATABASE sem2019_sarabi TO tadejm; GRANT CONNECT ON DATABASE sem2019_sarabi TO javnost;")
     cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
     baza.commit()
-    
+     """
 
 ###############################################
 
