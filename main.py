@@ -2,8 +2,8 @@
 import bottle
 
 # uvozimo podarke za povezavo
-import auth_public
-import auth
+import auth_public as auth
+# import auth
 
 # uvozimo psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
