@@ -105,3 +105,8 @@ venv.bak/
 
 # 
 auth.py
+
+#
+.DS_Store
+
+Thumbs.db
