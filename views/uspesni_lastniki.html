@@ -1,0 +1,40 @@
+%rebase('base.html', naslov='Uspešni lastniki')
+
+<style type="text/css">
+    body {
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        background-image: url('bg.jpg');
+    }
+    #wrapper {
+        width: 80%;
+        margin: 60px auto 0px auto;
+        padding: 20px 20px 20px 20px;
+</style>
+
+<div id="wrapper" class="row mb-2 no-gutters border rounded overflow-hidden shadow-sm h-md-600 position-relative" style="float:left; width:90%; border:1px solid; padding: 20px;">
+    <p>Lastniki ekip z vsaj 50% izkupičkom zmag</p>
+    <div id = "wrapper" style="height:500px;overflow-y:auto;overflow-y:auto;">
+        <table class="table table-bordered table-hover">
+           <thead class="thead-light">
+            <tr>
+               <th scope="col">Ime</th>
+               <th scope="col">Premoženje</th>
+               <th scope="col">Zmage</th>
+               <th scope="col">Ekipa</th>
+            </tr>
+            </thead>
+            <tbody>
+            %for (ime, premozenje, zmage, ekipa) in seznam_lastnikov:
+              <tr>
+                 <td>{{ime}}</td>
+                 <td>{{premozenje}}</td>
+                 <td>{{zmage}}</td>
+                 <td>{{ekipa}}</td>
+              </tr>
+            %end
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>
