@@ -11,6 +11,7 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 
 import hashlib # računanje MD5 kriptografski hash za gesla
 
+from urllib.parse import urlencode
 
 secret = "to skrivnost je zelo tezko uganiti 1094107c907cw982982c42"
 adminGeslo = "1111"
@@ -29,27 +30,8 @@ def password_md5(s):
     return h.hexdigest()
 
 
-def get_user():
-    """Poglej cookie in ugotovi, kdo je prijavljeni uporabnik,
-       vrni njegov username in ime. Če ni prijavljen, presumeri
-       na stran za prijavo ali vrni None (advisno od auto_login).
-    """
-    # Dobimo username iz piškotka
-    username = bottle.request.get_cookie('username', default='None', secret=secret)
-    # Preverimo, ali ta uporabnik obstaja
-    if username is not None:
-        c = baza.cursor()
-        c.execute("SELECT username FROM uporabnik WHERE username=%s",
-                  [username])
-        r = c.fetchone()
-        c.close ()
-        if r is not None:
-            # uporabnik obstaja, vrnemo njegove podatke
-            return r
-        else:
-            return None
-    else:
-        return None
+def check_user(username, prijavljen):
+    return username == prijavljen
 
 
 @bottle.route("/static/<filename:path>")
