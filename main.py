@@ -171,45 +171,38 @@ def trenerji_get():
 def trenerji_post():
     username=get_user()
 
-"""
+
 
 @bottle.get('/lastniki/')
 def lastniki_get():
     cur.execute("SELECT ime, ekipa, premozenje FROM lastnik")
     lastniki = cur.fetchall()
     napaka='napaka'
-    return bottle.template('lastniki.html', seznam_lastnikov=lastniki, napaka=None)
+    return bottle.template('lastniki.html', seznam_lastnikov=lastniki, username = '', napaka=None)
 
-@bottle.post("/ekipe/")
+@bottle.post("/lastniki/")
 def lastniki_post():
-<style type="text/css">
-    body {
-        margin: 0px 0px 0px 0px;
-        padding: 0px 0px 0px 0px;
-        background-image: url('bg.jpg');
-    }
-    #wrapper {
-        width: 80%;
-        margin: 60px auto 0px auto;
-        padding: 20px 20px 20px 20px;
-</style>    username=get_user()
+    username=get_user()
 
-@bottle.get('/uspesni-lastniki/')
+
+
+@bottle.get('/uspesni_lastniki/')
 def lastniki_get():
     cur.execute("SELECT lastnik.ime, lastnik.premozenje, ekipa.zmage, ekipa.ime as ekipa FROM lastnik JOIN ekipa ON lastnik.ekipa=ekipa.kratica WHERE ekipa.zmage>42 ORDER BY ekipa.zmage desc;")
     lastniki = cur.fetchall()
     napaka='napaka'
-    return bottle.template('uspesni-lastniki.html', seznam_lastnikov=lastniki, napaka=None)
+    return bottle.template('uspesni_lastniki.html', seznam_lastnikov=lastniki, username = '', napaka=None)
 
-@bottle.post("/ekipe/")
+@bottle.post("/uspesni_lastniki/")
 def lastniki_post():
     username=get_user()
-    
+
+
+
 def dodeli_pravice():
     cur.execute("GRANT CONNECT ON DATABASE sem2019_sarabi TO andrazdl; GRANT CONNECT ON DATABASE sem2019_sarabi TO tadejm; GRANT CONNECT ON DATABASE sem2019_sarabi TO javnost;")
     cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
     baza.commit()
-     """
 
 ###############################################
 
