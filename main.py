@@ -2,8 +2,8 @@
 import bottle
 
 # uvozimo podarke za povezavo
-import auth_public as auth
-# import auth
+import auth_public
+import auth
 
 # uvozimo psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -11,12 +11,9 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 
 import hashlib # računanje MD5 kriptografski hash za gesla
 
-from urllib.request import urlretrieve
-from urllib.parse import urlencode
 
 secret = "to skrivnost je zelo tezko uganiti 1094107c907cw982982c42"
 adminGeslo = "1111"
-prijavljen = None
 
 ###############################################
 
@@ -32,10 +29,27 @@ def password_md5(s):
     return h.hexdigest()
 
 
-def check_user(username, prijavljen):
-    print(username)
-    print(prijavljen)
-    return username == prijavljen
+def get_user():
+    """Poglej cookie in ugotovi, kdo je prijavljeni uporabnik,
+       vrni njegov username in ime. Če ni prijavljen, presumeri
+       na stran za prijavo ali vrni None (advisno od auto_login).
+    """
+    # Dobimo username iz piškotka
+    username = bottle.request.get_cookie('username', default='None', secret=secret)
+    # Preverimo, ali ta uporabnik obstaja
+    if username is not None:
+        c = baza.cursor()
+        c.execute("SELECT username FROM uporabnik WHERE username=%s",
+                  [username])
+        r = c.fetchone()
+        c.close ()
+        if r is not None:
+            # uporabnik obstaja, vrnemo njegove podatke
+            return r
+        else:
+            return None
+    else:
+        return None
 
 
 @bottle.route("/static/<filename:path>")
@@ -47,14 +61,11 @@ def static(filename):
 
 #############################################################################################################
 
-@bottle.route('/')
-@bottle.route('/?username="username"')
+@bottle.route("/")
 def main():
-    username = bottle.request.query.username
-    if check_user(username, prijavljen):
-        return bottle.template("zacetna_stran.html", username=username)
-    else:
-        return bottle.template("zacetna_stran.html", username=None)
+    username = get_user()
+    return bottle.template("zacetna_stran.html", username=username)
+
 #############################################################################################################
 
 @bottle.get("/prijava/")
@@ -82,24 +93,23 @@ def login_post():
                                napaka="Nepravilna prijava",
                                username='')
     else:
-        mydict = {'username': '{}'.format(username)}
-        qstr = urlencode(mydict)
-        global prijavljen
-        prijavljen = username
-        print(prijavljen)
-        bottle.redirect('/?' + qstr)
+        # Vse je v redu, nastavimo cookie in preusmerimo na glavno stran
+        bottle.response.set_cookie("username", username, secret=secret, path='/')
+        # PROBLEM: bottle.redirect zbriše cookie
+        bottle.redirect('/')
 
 @bottle.get("/odjava/")
 def logout():
-    global prijavljen
-    prijavljen = None
+    """Pobriši cookie in preusmeri na login."""
+    bottle.response.delete_cookie('username')
     bottle.redirect('/')
         
+    
 
 @bottle.get("/registracija/")
 def register_get():
     """Prikaži formo za registracijo."""
-    return bottle.template("registracija.html",
+    return bottle.template("registracija.html", 
                            username='',
                            napaka=None)
 
@@ -183,7 +193,17 @@ def lastniki_get():
 
 @bottle.post("/ekipe/")
 def lastniki_post():
-    username=get_user()
+<style type="text/css">
+    body {
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        background-image: url('bg.jpg');
+    }
+    #wrapper {
+        width: 80%;
+        margin: 60px auto 0px auto;
+        padding: 20px 20px 20px 20px;
+</style>    username=get_user()
 
 @bottle.get('/uspesni-lastniki/')
 def lastniki_get():
