@@ -131,6 +131,8 @@ def register_post():
 ###############################################
 
 
+
+
 @bottle.get('/ekipe/')
 def ekipe_get():
     cur.execute("SELECT ime, zmage, porazi FROM ekipa ORDER BY zmage DESC")
@@ -180,7 +182,17 @@ def lastniki_get():
 
 @bottle.post("/ekipe/")
 def lastniki_post():
-    username=get_user()
+<style type="text/css">
+    body {
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        background-image: url('bg.jpg');
+    }
+    #wrapper {
+        width: 80%;
+        margin: 60px auto 0px auto;
+        padding: 20px 20px 20px 20px;
+</style>    username=get_user()
 
 @bottle.get('/uspesni-lastniki/')
 def lastniki_get():
