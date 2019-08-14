@@ -2,8 +2,8 @@
 import bottle
 
 # uvozimo podarke za povezavo
-import auth_public
-import auth
+import auth_public as auth
+# import auth
 
 # uvozimo psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -15,6 +15,7 @@ from urllib.parse import urlencode
 
 secret = "to skrivnost je zelo tezko uganiti 1094107c907cw982982c42"
 adminGeslo = "1111"
+prijavljen = None
 
 ###############################################
 
@@ -43,11 +44,14 @@ def static(filename):
 
 #############################################################################################################
 
-@bottle.route("/")
+@bottle.route('/')
+@bottle.route('/?username="username"')
 def main():
-    username = get_user()
-    return bottle.template("zacetna_stran.html", username=username)
-
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template("zacetna_stran.html", username=username)
+    else:
+        return bottle.template("zacetna_stran.html", username=None)
 #############################################################################################################
 
 @bottle.get("/prijava/")
@@ -75,23 +79,24 @@ def login_post():
                                napaka="Nepravilna prijava",
                                username='')
     else:
-        # Vse je v redu, nastavimo cookie in preusmerimo na glavno stran
-        bottle.response.set_cookie("username", username, secret=secret, path='/')
-        # PROBLEM: bottle.redirect zbriše cookie
-        bottle.redirect('/')
+        mydict = {'username': '{}'.format(username)}
+        qstr = urlencode(mydict)
+        global prijavljen
+        prijavljen = username
+        print(prijavljen)
+        bottle.redirect('/?' + qstr)
 
 @bottle.get("/odjava/")
 def logout():
-    """Pobriši cookie in preusmeri na login."""
-    bottle.response.delete_cookie('username')
+    global prijavljen
+    prijavljen = None
     bottle.redirect('/')
         
-    
 
 @bottle.get("/registracija/")
 def register_get():
     """Prikaži formo za registracijo."""
-    return bottle.template("registracija.html", 
+    return bottle.template("registracija.html",
                            username='',
                            napaka=None)
 
@@ -124,6 +129,8 @@ def register_post():
 
 
 ###############################################
+
+
 
 
 @bottle.get('/ekipe/')
