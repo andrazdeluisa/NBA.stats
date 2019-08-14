@@ -32,8 +32,6 @@ def password_md5(s):
 
 
 def check_user(username, prijavljen):
-    print(username)
-    print(prijavljen)
     return username == prijavljen
 
 
