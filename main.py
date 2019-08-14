@@ -133,17 +133,19 @@ def register_post():
 
 ###############################################
 
-""" @bottle.get('/ekipe/')
+
+@bottle.get('/ekipe/')
 def ekipe_get():
     cur.execute("SELECT ime, zmage, porazi FROM ekipa ORDER BY zmage DESC")
     ekipe = cur.fetchall()
     napaka='napaka'
 
-    return bottle.template('ekipe.html', seznam_ekip= ekipe, napaka=None)
+    return bottle.template('ekipe.html', seznam_ekip=ekipe, username='', napaka=None)
 
 @bottle.post("/ekipe/")
 def ekipe_post():
     username=get_user()
+
 
 @bottle.get('/igralci/')
 def igralci_get():
@@ -151,22 +153,26 @@ def igralci_get():
     igralci = cur.fetchall()
     napaka='napaka'
     # return bottle.template('ekipe.html', ekipe=ekipe, napaka0=None, napaka=napaka, username=username)
-    return bottle.template('igralci.html', seznam_igralcev=igralci, napaka=None)
+    return bottle.template('igralci.html', seznam_igralcev=igralci, username='', napaka=None)
 
 @bottle.post("/igralci/")
 def igralci_post():
     username=get_user()
+
+
 
 @bottle.get('/trenerji/')
 def trenerji_get():
     cur.execute("SELECT ime, ekipa, zmage, porazi FROM trener")
     trenerji = cur.fetchall()
     napaka='napaka'
-    return bottle.template('trenerji.html', seznam_trenerjev = trenerji, napaka=None)
+    return bottle.template('trenerji.html', seznam_trenerjev = trenerji, username = '', napaka=None)
 
-@bottle.post("/ekipe/")
+@bottle.post("/trenerji/")
 def trenerji_post():
     username=get_user()
+
+"""
 
 @bottle.get('/lastniki/')
 def lastniki_get():
