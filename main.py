@@ -11,7 +11,6 @@ psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo prob
 
 import hashlib # računanje MD5 kriptografski hash za gesla
 
-from urllib.request import urlretrieve
 from urllib.parse import urlencode
 
 secret = "to skrivnost je zelo tezko uganiti 1094107c907cw982982c42"
