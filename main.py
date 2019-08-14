@@ -2,8 +2,8 @@
 import bottle
 
 # uvozimo podarke za povezavo
-import auth_public as auth
-# import auth
+#import auth_public as auth
+import auth
 
 # uvozimo psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -134,12 +134,15 @@ def register_post():
 
 
 @bottle.get('/ekipe/')
+@bottle.get('/ekipe/?username="username"')
 def ekipe_get():
-    cur.execute("SELECT ime, zmage, porazi FROM ekipa ORDER BY zmage DESC")
-    ekipe = cur.fetchall()
-    napaka='napaka'
-
-    return bottle.template('ekipe.html', seznam_ekip=ekipe, username='', napaka=None)
+    cur.execute("SELECT ime, zmage, porazi, ROUND(1.0*zmage/82, 2) FROM ekipa ORDER BY zmage DESC")
+    ekipe = cur.fetchall()    
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('ekipe.html', seznam_ekip=ekipe, username=username, napaka=None)
+    else:
+        return bottle.template('ekipe.html', seznam_ekip=ekipe, username=None, napaka=None)
 
 @bottle.post("/ekipe/")
 def ekipe_post():
@@ -147,12 +150,17 @@ def ekipe_post():
 
 
 @bottle.get('/igralci/')
+@bottle.get('/igralci/?username="username"')
 def igralci_get():
     cur.execute("SELECT ime, pozicija, starost FROM igralec")
     igralci = cur.fetchall()
     napaka='napaka'
+    username = bottle.request.query.username
     # return bottle.template('ekipe.html', ekipe=ekipe, napaka0=None, napaka=napaka, username=username)
-    return bottle.template('igralci.html', seznam_igralcev=igralci, username='', napaka=None)
+    if check_user(username, prijavljen):
+        return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka=None)
+    else:
+        return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka=None)
 
 @bottle.post("/igralci/")
 def igralci_post():
@@ -161,11 +169,16 @@ def igralci_post():
 
 
 @bottle.get('/trenerji/')
+@bottle.get('/trenerji/?username="username"')
 def trenerji_get():
     cur.execute("SELECT ime, ekipa, zmage, porazi FROM trener")
     trenerji = cur.fetchall()
     napaka='napaka'
-    return bottle.template('trenerji.html', seznam_trenerjev = trenerji, username = '', napaka=None)
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('trenerji.html', seznam_trenerjev=trenerji, username=username, napaka=None)
+    else:
+        return bottle.template('trenerji.html', seznam_trenerjev=trenerji, username=None, napaka=None)
 
 @bottle.post("/trenerji/")
 def trenerji_post():

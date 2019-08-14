@@ -30,12 +30,12 @@
             </tr>
             </thead>
             <tbody>
-            %for (ime,zmage,porazi) in seznam_ekip:
+            %for (ime,zmage,porazi,razmerje) in seznam_ekip:
               <tr>
                  <td>{{ime}}</td>
                  <td>{{zmage}}</td>
                  <td>{{porazi}}</td>
-                 <td>{{zmage/82}}</td>
+                 <td>{{razmerje}}</td>
               </tr>
             %end
             </tbody>
