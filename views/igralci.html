@@ -22,6 +22,9 @@
       <i class="fas fa-search" aria-hidden="true"></i>
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Najdi</button>
     </form>
+    %if napaka:
+        <div class="alert alert-warning">{{napaka}}</div>
+    %end
 
 
     <div id="wrapper" style="height:550px;overflow-y:auto;overflow-y:auto;">

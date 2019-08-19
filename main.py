@@ -152,6 +152,8 @@ def ekipe_post():
 @bottle.get('/igralci/')
 @bottle.get('/igralci/?username="username"')
 def igralci_get():
+    #if searchon:
+    #    
     cur.execute("SELECT ime, pozicija, starost FROM igralec")
     igralci = cur.fetchall()
     napaka='napaka'
@@ -164,7 +166,37 @@ def igralci_get():
 
 @bottle.post("/igralci/")
 def igralci_post():
-    username=get_user()
+    # username=get_user()
+    # Search bar bo implementiran tako, da bo probalo samo popravit, če se uporabnik zmoti v par črkah
+    iskana_beseda = bottle.request.forms.search
+    c = baza.cursor()
+    c.execute("SELECT * FROM igralec WHERE ime=%s", [iskana_beseda])
+    igralci = c.fetchall()
+    username = bottle.request.query.username
+    if igralci != []:
+        # Našli smo igralca
+        if check_user(username, prijavljen):
+            return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka=None)
+        else:
+            return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka=None)
+    else:
+        popravljena_beseda = popravi_besedo(iskana_beseda)
+        if popravljena_beseda != False:
+            c.execute("SELECT * FROM igralec WHERE ime=%s", [popravljena_beseda])
+            igralci = c.fetchall()
+            if check_user(username, prijavljen):
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Verjetno ste mislili {}".format(popravljena_beseda))
+            else:
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Verjetno ste mislili {}".format(popravljena_beseda))
+        else:
+            c.execute("SELECT ime, pozicija, starost FROM igralec")
+            igralci = c.fetchall()
+            if check_user(username, prijavljen):
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Burek si")
+            else:
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Burek si")
+    # if popravi_besedo(iskana_beseda):
+
 
 
 
@@ -217,6 +249,33 @@ def dodeli_pravice():
     cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
     baza.commit()
 
+def popravi_besedo(beseda):
+    username = beseda
+    c = baza.cursor()
+    c.execute("SELECT ime, pozicija, starost FROM igralec")
+    seznam = c.fetchall()
+    imena = []
+    for igralec in seznam:
+        imena.append(igralec[0])
+    # Ustvarili bomo slovar, v katerem bo stevilo razlicnih znakov, glede na podano besedo
+    slovar_diferenc = {}
+    for ime in imena:
+        slovar_diferenc[ime] = diference_crk(ime, beseda)
+    najmanjsa = min(slovar_diferenc, key=slovar_diferenc.get)
+    # Program bo vrnil False, če bo razlika prevelika
+    if slovar_diferenc[najmanjsa] <= 3:
+        return najmanjsa
+    else:
+        return False
+
+def diference_crk(beseda1, beseda2):
+    # Funkcija izracuna stevilo znakov, v katerih se crki razlikujeta
+    dolzina = min(len(beseda1), len(beseda2))
+    diferenca = 0
+    for i in range(dolzina):
+        if beseda1[i] != beseda2[i]:
+            diferenca+=1
+    return diferenca
 ###############################################
 
 # GLAVNI PROGRAM
