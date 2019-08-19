@@ -136,7 +136,7 @@ def register_post():
 @bottle.get('/ekipe/')
 @bottle.get('/ekipe/?username="username"')
 def ekipe_get():
-    cur.execute("SELECT ime, zmage, porazi, ROUND(1.0*zmage/82, 2) FROM ekipa ORDER BY zmage DESC")
+    cur.execute("SELECT ime, zmage, porazi, ROUND(1.0*zmage/82, 2), kratica FROM ekipa ORDER BY zmage DESC")
     ekipe = cur.fetchall()    
     username = bottle.request.query.username
     if check_user(username, prijavljen):
@@ -147,6 +147,9 @@ def ekipe_get():
 @bottle.post("/ekipe/")
 def ekipe_post():
     username=get_user()
+
+
+
 
 
 @bottle.get('/igralci/')
@@ -200,6 +203,7 @@ def igralci_post():
 
 
 
+
 @bottle.get('/trenerji/')
 @bottle.get('/trenerji/?username="username"')
 def trenerji_get():
@@ -218,6 +222,8 @@ def trenerji_post():
 
 
 
+
+
 @bottle.get('/lastniki/')
 def lastniki_get():
     cur.execute("SELECT ime, ekipa, premozenje FROM lastnik")
@@ -228,6 +234,8 @@ def lastniki_get():
 @bottle.post("/lastniki/")
 def lastniki_post():
     username=get_user()
+
+
 
 
 
@@ -244,10 +252,27 @@ def lastniki_post():
 
 
 
-def dodeli_pravice():
-    cur.execute("GRANT CONNECT ON DATABASE sem2019_sarabi TO andrazdl; GRANT CONNECT ON DATABASE sem2019_sarabi TO tadejm; GRANT CONNECT ON DATABASE sem2019_sarabi TO javnost;")
-    cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
-    baza.commit()
+
+
+@bottle.get('/ekipa/:x/')
+def ekipa_get(x):
+    cur.execute("SELECT * FROM statistika WHERE statistika.ekipa = %s", [str(x)])
+    stat = cur.fetchall()
+    napaka='napaka'
+    return bottle.template('ekipa.html', x=x, statistika=stat, username='', napaka=None)
+
+
+@bottle.post("/ekipa/:x")
+def lastniki_post():
+     username=get_user()
+
+
+
+
+
+##################################################################
+
+
 
 def popravi_besedo(beseda):
     username = beseda
@@ -276,6 +301,15 @@ def diference_crk(beseda1, beseda2):
         if beseda1[i] != beseda2[i]:
             diferenca+=1
     return diferenca
+
+
+###############################################
+
+def dodeli_pravice():
+    cur.execute("GRANT CONNECT ON DATABASE sem2019_sarabi TO andrazdl; GRANT CONNECT ON DATABASE sem2019_sarabi TO tadejm; GRANT CONNECT ON DATABASE sem2019_sarabi TO javnost;")
+    cur.execute("GRANT ALL ON ALL TABLES IN SCHEMA public TO andrazdl; GRANT ALL ON ALL TABLES IN SCHEMA public TO tadejm; GRANT SELECT ON ALL TABLES IN SCHEMA public TO javnost;")
+    baza.commit()
+    
 ###############################################
 
 # GLAVNI PROGRAM

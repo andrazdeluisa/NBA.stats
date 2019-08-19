@@ -23,6 +23,7 @@
         <table class="table table-bordered table-hover">
            <thead class="thead-light">
             <tr>
+               <th scope="col">Ekipa</th>
                <th scope="col">Ime</th>
                <th scope="col">Zmage</th>
                <th scope="col">Porazi</th>
@@ -30,8 +31,9 @@
             </tr>
             </thead>
             <tbody>
-            %for (ime,zmage,porazi,razmerje) in seznam_ekip:
+            %for (ime,zmage,porazi,razmerje, kratica) in seznam_ekip:
               <tr>
+                 <td><a href="/ekipa/{{kratica}}/">{{kratica}}</a></td>
                  <td>{{ime}}</td>
                  <td>{{zmage}}</td>
                  <td>{{porazi}}</td>

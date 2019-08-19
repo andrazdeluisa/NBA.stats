@@ -1,0 +1,77 @@
+%rebase('base.html', naslov='Ekipa '.format(x))
+
+<style type="text/css">
+    body {
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        background-image: url('bg.jpg');
+    }
+    #wrapper {
+        width: 80%;
+        margin: 60px auto 0px auto;
+        padding: 20px 20px 20px 20px;
+</style>
+
+<div id="wrapper" class="row mb-2 no-gutters border rounded overflow-hidden shadow-sm h-md-600 position-relative" style="float:left; width:80%; border:1px solid; padding: 20px;">
+   
+    <br style="margin-bottom:240px;"/>
+
+    <h2>{{x}}</h2>
+    
+
+    <div id="wrapper" style="height:700px;overflow-y:auto;overflow-y:auto;">
+        <table class="table table-bordered table-hover">
+           <thead class="thead-light">
+            <tr>
+               <th scope="col">Igralec</th>
+               <th scope="col">Število tekem</th>
+               <th scope="col">Začetna postava</th>
+               <th scope="col">Minutaža</th>
+               <th scope="col">Točke</th>
+               <th scope="col">Osebne napake</th>
+               <th scope="col">Izgubljene žoge</th>
+               <th scope="col">Blokade</th>
+               <th scope="col">Ukradene žoge</th>
+               <th scope="col">Podaje</th>
+               <th scope="col">Skoki v obrambi</th>
+               <th scope="col">Skoki v napadu</th>
+               <th scope="col">Število prostih metov</th>
+               <th scope="col">Število zadetih prostih metov</th>
+               <th scope="col">Število trojk</th>
+               <th scope="col">Število zadetih trojk</th>
+               <th scope="col">Število metov iz igre</th>
+               <th scope="col">Število zadetih metov iz igre</th>
+               <th scope="col">Plača</th>
+
+
+            </tr>
+            </thead>
+            <tbody>
+            %for (ime, ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa) in statistika:
+              <tr>
+                 <td>{{ime}}</td>
+                 <td>{{stevilo_tekem}}</td>
+                 <td>{{zacetna_postava}}</td>
+                 <td>{{minutaza}}</td>
+                 <td>{{tocke}}</td>
+                 <td>{{osebne_napake}}</td>
+                 <td>{{izgubljene_zoge}}</td>
+                 <td>{{blokade}}</td>
+                 <td>{{ukradene_zoge}}</td>
+                 <td>{{podaje}}</td>
+                 <td>{{skoki_v_obrambi}}</td>
+                 <td>{{skoki_v_napadu}}</td>
+                 <td>{{stevilo_prostih_metov}}</td>
+                 <td>{{stevilo_zadetih_prostih_metov}}</td>
+                 <td>{{stevilo_trojk}}</td>
+                 <td>{{stevilo_zadetih_trojk}}</td>
+                 <td>{{stevilo_metov_iz_igre}}</td>
+                 <td>{{stevilo_zadetih_metov_iz_igre}}</td>
+                 <td>{{placa}}</td>
+              </tr>
+            %end
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>
