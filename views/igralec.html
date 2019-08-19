@@ -1,4 +1,4 @@
-%rebase('base.html', naslov='Ekipa '.format(x))
+%rebase('base.html', naslov='Igralec '.format(x))
 
 <style type="text/css">
     body {
@@ -23,7 +23,6 @@
         <table class="table table-bordered table-hover">
            <thead class="thead-light">
             <tr>
-               <th scope="col">Igralec</th>
                <th scope="col">Število tekem</th>
                <th scope="col">Začetna postava</th>
                <th scope="col">Minutaža</th>
@@ -47,9 +46,8 @@
             </tr>
             </thead>
             <tbody>
-            %for (ime, ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa) in statistika:
+            %for (ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa) in statistika:
               <tr>
-                 <td>{{ime}}</td>
                  <td>{{stevilo_tekem}}</td>
                  <td>{{zacetna_postava}}</td>
                  <td>{{minutaza}}</td>

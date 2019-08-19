@@ -269,6 +269,20 @@ def lastniki_post():
 
 
 
+@bottle.get('/igralec/:x/')
+def ekipa_get(x):
+    cur.execute("SELECT ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa FROM statistika WHERE statistika.ime = %s", [str(x)])
+    stat = cur.fetchall()
+    napaka='napaka'
+    return bottle.template('igralec.html', x=x, statistika=stat, username='', napaka=None)
+
+
+@bottle.post("/igralec/:x")
+def lastniki_post():
+     username=get_user()
+
+
+
 
 ##################################################################
 

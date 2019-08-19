@@ -12,7 +12,7 @@
        padding: 20px 20px 20px 20px;
 </style>
 
-<div id="wrapper" class="row mb-2 no-gutters border rounded overflow-hidden shadow-sm h-md-600 position-relative" style="float:left; width:90%; border:1px solid; padding: 20px;">
+<div id="wrapper" class="row mb-2 no-gutters border rounded overflow-hidden shadow-sm h-md-600 position-relative" style="float:left; width:100%; border:1px solid; padding: 20px;">
    
     <h2>Igralci</h2> 
 
@@ -39,7 +39,7 @@
             <tbody>
             %for (ime,pozicija,starost) in seznam_igralcev:
               <tr>
-                 <td>{{ime}}</td>
+                <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
                  <td>{{pozicija}}</td>
                  <td>{{starost}}</td>
               </tr>
