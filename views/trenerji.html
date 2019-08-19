@@ -20,7 +20,7 @@
             <tr>
                <th scope="col">Ime</th>
                <th scope="col">Ekipa</th>
-               <th scope="col">Zmege</th>
+               <th scope="col">Zmage</th>
                <th scope="col">Porazi</th>
                <th scope="col">Razmerje</th>
             </tr>
@@ -32,7 +32,7 @@
                  <td>{{ekipa}}</td>
                  <td>{{zmage}}</td>
                  <td>{{porazi}}</td>
-                 <td>{{zmage/82}}</td>
+                 <td>{{round(zmage/82 * 100, 2)}}%</td>
               </tr>
             %end
             </tbody>
