@@ -72,20 +72,20 @@
         </table>
         <p></p>
         <h3>Statistika:</h3>
-        <p>Točke: {{tocke / stevilo_tekem}}</p>
-        <p>Podaje: {{podaje / stevilo_tekem}}</p>
-        <p>Skoki: {{(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem}}</p>
-        <p>Blokade: {{blokade / stevilo_tekem}}</p>
+        <p>Točke: {{round(tocke / stevilo_tekem, 2)}}</p>
+        <p>Podaje: {{round(podaje / stevilo_tekem, 2)}}</p>
+        <p>Skoki: {{round((skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem, 2)}}</p>
+        <p>Blokade: {{round(blokade / stevilo_tekem, 2)}}</p>
         %if stevilo_prostih_metov != 0:
-                    <p>Prosti meti: {{(stevilo_zadetih_prostih_metov * 100) / stevilo_prostih_metov}}</p>
+                    <p>Prosti meti: {{round((stevilo_zadetih_prostih_metov * 100) / stevilo_prostih_metov, 2)}}</p>
                 %end
                 
                 %if stevilo_metov_iz_igre != 0:
-                    <p>Meti iz igre: {{(stevilo_zadetih_metov_iz_igre * 100) / stevilo_metov_iz_igre}}</p>
+                    <p>Met iz igre: {{round((stevilo_zadetih_metov_iz_igre * 100) / stevilo_metov_iz_igre, 2)}}</p>
                 %end 
 
                 %if stevilo_trojk != 0:
-                    <p>Trojke: {{(stevilo_zadetih_trojk * 100) / stevilo_trojk}}</p>
+                    <p>Trojke: {{round((stevilo_zadetih_trojk * 100) / stevilo_trojk, 2)}}</p>
                 %else:
                     <p>{{0}}</>
                 %end

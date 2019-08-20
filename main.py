@@ -291,7 +291,7 @@ def lastniki_post():
 
 @bottle.get('/uspesni_igralci/')
 def igralci_get():
-    cur.execute("SELECT ime, ekipa, tocke, stevilo_tekem, skoki_v_obrambi, skoki_v_napadu, blokade, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk FROM statistika WHERE tocke/stevilo_tekem > 15 ORDER BY tocke/stevilo_tekem DESC")
+    cur.execute("SELECT ime, ekipa, stevilo_tekem, tocke, blokade, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk FROM statistika WHERE tocke/stevilo_tekem > 15 ORDER BY tocke/stevilo_tekem DESC")
     igralci = cur.fetchall()
     napaka='napaka'
     return bottle.template('uspesni_igralci.html', seznam_igralcev=igralci, username = '', napaka=None)
