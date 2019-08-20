@@ -17,7 +17,6 @@
     <br style="margin-bottom:240px;"/>
 
     <h2>Ekipe</h2>
-    
 
     <div id="wrapper" style="height:700px;overflow-y:auto;overflow-y:auto;">
         <table class="table table-bordered table-hover">
@@ -33,7 +32,7 @@
             <tbody>
             %for (ime,zmage,porazi,razmerje,kratica) in seznam_ekip:
               <tr>
-                 <td><a href="/ekipa/{{kratica}}"></a><p><img class="imageWithText" src="/static/logo/{{kratica}}.png"> {{kratica}}</p></a></td>
+                <td><a href="/ekipa/{{kratica}}/">{{kratica}} <img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{kratica}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></a></td>
                  <td>{{ime}}</td>
                  <td>{{zmage}}</td>
                  <td>{{porazi}}</td>
