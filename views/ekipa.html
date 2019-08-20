@@ -49,7 +49,7 @@
             <tbody>
             %for (ime, ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa) in statistika:
               <tr>
-                 <td>{{ime}}</td>
+                 <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
                  <td>{{stevilo_tekem}}</td>
                  <td>{{zacetna_postava}}</td>
                  <td>{{minutaza}}</td>
