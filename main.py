@@ -306,7 +306,7 @@ def igralci_post():
 
 @bottle.get('/dvojni_dvojcki/')
 def lastniki_get():
-    cur.execute("SELECT ime, ekipa, ROUND(1.0*tocke / stevilo_tekem, 2), ROUND(1.0*podaje / stevilo_tekem, 2), ROUND(1.0*(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem, 2) FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 OR tocke/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 OR podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10")
+    cur.execute("SELECT ime, ekipa, ROUND(1.0*tocke / stevilo_tekem, 2), ROUND(1.0*podaje / stevilo_tekem, 2), ROUND(1.0*(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem, 2) FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 OR tocke/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 OR podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 ORDER BY tocke/stevilo_tekem DESC")
     dvojcek = cur.fetchall()
     napaka='napaka'
     return bottle.template('dvojni_dvojcki.html', dvojni_dvojcek=dvojcek, username = '', napaka=None)

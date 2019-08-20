@@ -13,7 +13,7 @@
 </style>
 
 <div id="wrapper" class="row mb-2 no-gutters border rounded overflow-hidden shadow-sm h-md-600 position-relative" style="float:left; width:100%; border:1px solid; padding: 20px;">
-    <p>Statistika igralcev, ki povprečno na tekmo dosegajo več kot 15 točk.</p>
+    <h3>Statistika igralcev, ki povprečno na tekmo dosegajo več kot 15 točk.</h3>
     <div id = "wrapper" style="height:700px;overflow-y:auto;overflow-y:auto;">
         <table class="table table-bordered table-hover">
            <thead class="thead-light">
@@ -42,15 +42,15 @@
                 %end
 
                 %if stevilo_prostih_metov != 0:
-                    <td>{{round((stevilo_zadetih_prostih_metov * 100) / stevilo_prostih_metov, 2)}}</td>
+                    <td>{{round((stevilo_zadetih_prostih_metov * 100) / stevilo_prostih_metov, 2)}} %</td>
                 %end
                 
                 %if stevilo_metov_iz_igre != 0:
-                    <td>{{round((stevilo_zadetih_metov_iz_igre * 100) / stevilo_metov_iz_igre, 2)}}</td>
+                    <td>{{round((stevilo_zadetih_metov_iz_igre * 100) / stevilo_metov_iz_igre, 2)}} &</td>
                 %end 
 
                 %if stevilo_trojk != 0:
-                    <td>{{round((stevilo_zadetih_trojk * 100) / stevilo_trojk, 2)}}</td>
+                    <td>{{round((stevilo_zadetih_trojk * 100) / stevilo_trojk, 2)}} %</td>
                 %else:
                     <td>{{0}}</td>
                 %end
