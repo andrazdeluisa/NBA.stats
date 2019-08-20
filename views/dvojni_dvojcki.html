@@ -1,0 +1,43 @@
+%rebase('base.html', naslov='Dvojni dvojčki')
+
+<style type="text/css">
+    body {
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        background-image: url('bg.jpg');
+    }
+    #wrapper {
+        width: 80%;
+        margin: 60px auto 0px auto;
+        padding: 20px 20px 20px 20px;
+</style>
+
+<div id="wrapper" class="row mb-2 no-gutters border rounded overflow-hidden shadow-sm h-md-600 position-relative" style="float:left; width:100%; border:1px solid; padding: 20px;">
+    <p>Igralci, ki na tekmo v povprečju dosegajo dvojnega dvojčka.</p>
+    <div id = "wrapper" style="height:700px;overflow-y:auto;overflow-y:auto;">
+        <table class="table table-bordered table-hover">
+           <thead class="thead-light">
+            <tr>
+               <th scope="col">Ime</th>
+               <th scope="col">Ekipa</th>
+               <th scope="col">Tocke</th>
+               <th scope="col">Podaje</th>
+               <th scope="col">Skoki</th>
+               
+            </tr>
+            </thead>
+            <tbody>
+            %for (ime, ekipa, stevilo_tekem, tocke, podaje, skoki_v_napadu, skoki_v_obrambi) in dvojni_dvojcek:
+              <tr>
+                 <td>{{ime}}</td>
+                 <td>{{ekipa}}</td>
+                 <td>{{tocke / stevilo_tekem}}</td>
+                 <td>{{podaje / stevilo_tekem}}</td>
+                 <td>{{(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem}}</td>
+              </tr>
+            %end
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>

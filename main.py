@@ -239,21 +239,6 @@ def lastniki_post():
 
 
 
-@bottle.get('/uspesni_lastniki/')
-def lastniki_get():
-    cur.execute("SELECT lastnik.ime, lastnik.premozenje, ekipa.zmage, ekipa.ime as ekipa FROM lastnik JOIN ekipa ON lastnik.ekipa=ekipa.kratica WHERE ekipa.zmage>42 ORDER BY ekipa.zmage desc;")
-    lastniki = cur.fetchall()
-    napaka='napaka'
-    return bottle.template('uspesni_lastniki.html', seznam_lastnikov=lastniki, username = '', napaka=None)
-
-@bottle.post("/uspesni_lastniki/")
-def lastniki_post():
-    username=get_user()
-
-
-
-
-
 @bottle.get('/ekipa/:x/')
 def ekipa_get(x):
     cur.execute("SELECT * FROM statistika WHERE statistika.ekipa = %s", [str(x)])
@@ -282,6 +267,68 @@ def lastniki_post():
      username=get_user()
 
 
+
+###
+
+
+# ZANIMIVOSTI
+
+
+@bottle.get('/uspesni_lastniki/')
+def lastniki_get():
+    cur.execute("SELECT lastnik.ime, lastnik.premozenje, ekipa.zmage, ekipa.ime as ekipa FROM lastnik JOIN ekipa ON lastnik.ekipa=ekipa.kratica WHERE ekipa.zmage>42 ORDER BY ekipa.zmage desc;")
+    lastniki = cur.fetchall()
+    napaka='napaka'
+    return bottle.template('uspesni_lastniki.html', seznam_lastnikov=lastniki, username = '', napaka=None)
+
+@bottle.post("/uspesni_lastniki/")
+def lastniki_post():
+    username=get_user()
+
+
+
+
+
+@bottle.get('/uspesni_igralci/')
+def igralci_get():
+    cur.execute("SELECT ime, ekipa, tocke, stevilo_tekem, skoki_v_obrambi, skoki_v_napadu, blokade, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk FROM statistika WHERE tocke/stevilo_tekem > 15 ORDER BY tocke/stevilo_tekem DESC")
+    igralci = cur.fetchall()
+    napaka='napaka'
+    return bottle.template('uspesni_igralci.html', seznam_igralcev=igralci, username = '', napaka=None)
+
+@bottle.post("/uspesni_igralci/")
+def igralci_post():
+    username=get_user()
+
+
+
+
+
+@bottle.get('/dvojni_dvojcki/')
+def lastniki_get():
+    cur.execute("SELECT ime, ekipa, stevilo_tekem, tocke, podaje, skoki_v_obrambi, skoki_v_napadu FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 OR tocke/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 OR podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10")
+    dvojcek = cur.fetchall()
+    napaka='napaka'
+    return bottle.template('dvojni_dvojcki.html', dvojni_dvojcek=dvojcek, username = '', napaka=None)
+
+@bottle.post("/dvojni_dvojcki/")
+def lastniki_post():
+    username=get_user()
+
+
+
+
+
+@bottle.get('/trojni_dvojcki/')
+def lastniki_get():
+    cur.execute("SELECT ime, ekipa, stevilo_tekem, tocke, podaje, skoki_v_obrambi, skoki_v_napadu FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 ORDER BY tocke/stevilo_tekem DESC")
+    trojni = cur.fetchall()
+    napaka='napaka'
+    return bottle.template('trojni_dvojcki.html', trojni_dvojcek=trojni, username = '', napaka=None)
+
+@bottle.post("/trojni_:dvojcki/")
+def lastniki_post():
+    username=get_user()
 
 
 ##################################################################
