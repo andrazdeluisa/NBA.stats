@@ -39,9 +39,13 @@
             <tbody>
             %for (ime,pozicija,starost) in seznam_igralcev:
               <tr>
-                <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
-                 <td>{{pozicija}}</td>
-                 <td>{{starost}}</td>
+                % if username:
+                    <td><a href="/igralec/{{ime}}/?username={{username}}">{{ime}}</a></td>
+                % else:
+                    <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
+                % end
+                <td>{{pozicija}}</td>
+                <td>{{starost}}</td>
               </tr>
             %end
             </tbody>

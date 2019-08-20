@@ -54,25 +54,29 @@
             <tbody>
             %for (ime, ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa) in statistika:
               <tr>
-                 <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
-                 <td>{{stevilo_tekem}}</td>
-                 <td>{{zacetna_postava}}</td>
-                 <td>{{minutaza}}</td>
-                 <td>{{tocke}}</td>
-                 <td>{{osebne_napake}}</td>
-                 <td>{{izgubljene_zoge}}</td>
-                 <td>{{blokade}}</td>
-                 <td>{{ukradene_zoge}}</td>
-                 <td>{{podaje}}</td>
-                 <td>{{skoki_v_obrambi}}</td>
-                 <td>{{skoki_v_napadu}}</td>
-                 <td>{{stevilo_prostih_metov}}</td>
-                 <td>{{stevilo_zadetih_prostih_metov}}</td>
-                 <td>{{stevilo_trojk}}</td>
-                 <td>{{stevilo_zadetih_trojk}}</td>
-                 <td>{{stevilo_metov_iz_igre}}</td>
-                 <td>{{stevilo_zadetih_metov_iz_igre}}</td>
-                 <td>{{placa}}</td>
+                % if username:
+                    <td><a href="/igralec/{{ime}}/?username={{username}}">{{ime}}</a></td>
+                % else:
+                    <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
+                % end
+                <td>{{stevilo_tekem}}</td>
+                <td>{{zacetna_postava}}</td>
+                <td>{{minutaza}}</td>
+                <td>{{tocke}}</td>
+                <td>{{osebne_napake}}</td>
+                <td>{{izgubljene_zoge}}</td>
+                <td>{{blokade}}</td>
+                <td>{{ukradene_zoge}}</td>
+                <td>{{podaje}}</td>
+                <td>{{skoki_v_obrambi}}</td>
+                <td>{{skoki_v_napadu}}</td>
+                <td>{{stevilo_prostih_metov}}</td>
+                <td>{{stevilo_zadetih_prostih_metov}}</td>
+                <td>{{stevilo_trojk}}</td>
+                <td>{{stevilo_zadetih_trojk}}</td>
+                <td>{{stevilo_metov_iz_igre}}</td>
+                <td>{{stevilo_zadetih_metov_iz_igre}}</td>
+                <td>{{placa}}</td>
               </tr>
             %end
             </tbody>
