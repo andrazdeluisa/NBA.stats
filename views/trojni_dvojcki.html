@@ -27,13 +27,13 @@
             </tr>
             </thead>
             <tbody>
-            %for (ime, ekipa, stevilo_tekem, tocke, podaje, skoki_v_obrambi, skoki_v_napadu) in trojni_dvojcek:
+            %for (ime, ekipa, pts, asist, reb) in trojni_dvojcek:
               <tr>
                  <td>{{ime}}</td>
                  <td>{{ekipa}}</td>
-                 <td>{{tocke / stevilo_tekem}}</td>
-                 <td>{{podaje / stevilo_tekem}}</td>
-                 <td>{{(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem}}</td>
+                 <td>{{pts}}</td>
+                 <td>{{asist}}</td>
+                 <td>{{reb}}</td>
               </tr>
             %end
             </tbody>

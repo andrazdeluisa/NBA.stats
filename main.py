@@ -306,7 +306,7 @@ def igralci_post():
 
 @bottle.get('/dvojni_dvojcki/')
 def lastniki_get():
-    cur.execute("SELECT ime, ekipa, stevilo_tekem, tocke, podaje, skoki_v_obrambi, skoki_v_napadu FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 OR tocke/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 OR podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10")
+    cur.execute("SELECT ime, ekipa, ROUND(1.0*tocke / stevilo_tekem, 2), ROUND(1.0*podaje / stevilo_tekem, 2), ROUND(1.0*(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem, 2) FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 OR tocke/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 OR podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10")
     dvojcek = cur.fetchall()
     napaka='napaka'
     return bottle.template('dvojni_dvojcki.html', dvojni_dvojcek=dvojcek, username = '', napaka=None)
@@ -321,7 +321,7 @@ def lastniki_post():
 
 @bottle.get('/trojni_dvojcki/')
 def lastniki_get():
-    cur.execute("SELECT ime, ekipa, stevilo_tekem, tocke, podaje, skoki_v_obrambi, skoki_v_napadu FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 ORDER BY tocke/stevilo_tekem DESC")
+    cur.execute("SELECT ime, ekipa, ROUND(1.0*tocke / stevilo_tekem, 2), ROUND(1.0*podaje / stevilo_tekem, 2), ROUND(1.0*(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem, 2) FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 ORDER BY tocke/stevilo_tekem DESC")
     trojni = cur.fetchall()
     napaka='napaka'
     return bottle.template('trojni_dvojcki.html', trojni_dvojcek=trojni, username = '', napaka=None)
