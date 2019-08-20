@@ -70,6 +70,25 @@
             %end
             </tbody>
         </table>
+        <p></p>
+        <h3>Statistika:</h3>
+        <p>Točke: {{tocke / stevilo_tekem}}</p>
+        <p>Podaje: {{podaje / stevilo_tekem}}</p>
+        <p>Skoki: {{(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem}}</p>
+        <p>Blokade: {{blokade / stevilo_tekem}}</p>
+        %if stevilo_prostih_metov != 0:
+                    <p>Prosti meti: {{(stevilo_zadetih_prostih_metov * 100) / stevilo_prostih_metov}}</p>
+                %end
+                
+                %if stevilo_metov_iz_igre != 0:
+                    <p>Meti iz igre: {{(stevilo_zadetih_metov_iz_igre * 100) / stevilo_metov_iz_igre}}</p>
+                %end 
+
+                %if stevilo_trojk != 0:
+                    <p>Trojke: {{(stevilo_zadetih_trojk * 100) / stevilo_trojk}}</p>
+                %else:
+                    <p>{{0}}</>
+                %end
     </div>
   </div>
 </div>
