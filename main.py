@@ -2,8 +2,8 @@
 import bottle
 
 # uvozimo podarke za povezavo
-#import auth_public as auth
-import auth
+import auth_public as auth
+#import auth
 
 # uvozimo psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -13,8 +13,6 @@ import hashlib # računanje MD5 kriptografski hash za gesla
 
 from urllib.parse import urlencode
 
-secret = "to skrivnost je zelo tezko uganiti 1094107c907cw982982c42"
-adminGeslo = "1111"
 prijavljen = None
 
 ###############################################
@@ -136,17 +134,13 @@ def register_post():
 @bottle.get('/ekipe/')
 @bottle.get('/ekipe/?username="username"')
 def ekipe_get():
-    cur.execute("SELECT ime, zmage, porazi, ROUND(1.0*zmage/82, 2), kratica FROM ekipa ORDER BY zmage DESC")
+    cur.execute("SELECT ime, zmage, porazi, ROUND(100.0*zmage/82, 2), kratica FROM ekipa ORDER BY zmage DESC")
     ekipe = cur.fetchall()    
     username = bottle.request.query.username
     if check_user(username, prijavljen):
         return bottle.template('ekipe.html', seznam_ekip=ekipe, username=username, napaka=None)
     else:
         return bottle.template('ekipe.html', seznam_ekip=ekipe, username=None, napaka=None)
-
-@bottle.post("/ekipe/")
-def ekipe_post():
-    username=get_user()
 
 
 
@@ -159,9 +153,7 @@ def igralci_get():
     #    
     cur.execute("SELECT ime, pozicija, starost FROM igralec")
     igralci = cur.fetchall()
-    napaka='napaka'
     username = bottle.request.query.username
-    # return bottle.template('ekipe.html', ekipe=ekipe, napaka0=None, napaka=napaka, username=username)
     if check_user(username, prijavljen):
         return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka=None)
     else:
@@ -209,63 +201,57 @@ def igralci_post():
 def trenerji_get():
     cur.execute("SELECT ime, ekipa, zmage, porazi FROM trener")
     trenerji = cur.fetchall()
-    napaka='napaka'
     username = bottle.request.query.username
     if check_user(username, prijavljen):
         return bottle.template('trenerji.html', seznam_trenerjev=trenerji, username=username, napaka=None)
     else:
         return bottle.template('trenerji.html', seznam_trenerjev=trenerji, username=None, napaka=None)
 
-@bottle.post("/trenerji/")
-def trenerji_post():
-    username=get_user()
-
 
 
 
 
 @bottle.get('/lastniki/')
+@bottle.get('/lastniki/?username="username"')
 def lastniki_get():
+
     cur.execute("SELECT ime, ekipa, premozenje FROM lastnik")
     lastniki = cur.fetchall()
-    napaka='napaka'
-    return bottle.template('lastniki.html', seznam_lastnikov=lastniki, username = '', napaka=None)
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('lastniki.html', seznam_lastnikov=lastniki, username=username, napaka=None)
+    else:
+        return bottle.template('lastniki.html', seznam_lastnikov=lastniki, username=None, napaka=None)
 
-@bottle.post("/lastniki/")
-def lastniki_post():
-    username=get_user()
 
 
 
 
 
 @bottle.get('/ekipa/:x/')
+@bottle.get('ekipa/:x/?username="username"')
 def ekipa_get(x):
     cur.execute("SELECT * FROM statistika WHERE statistika.ekipa = %s", [str(x)])
     stat = cur.fetchall()
-    napaka='napaka'
-    return bottle.template('ekipa.html', x=x, statistika=stat, username='', napaka=None)
-
-
-@bottle.post("/ekipa/:x")
-def lastniki_post():
-     username=get_user()
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('ekipa.html', x=x, statistika=stat, username=username, napaka=None)
+    else:
+        return bottle.template('ekipa.html',x=x, statistika=stat, username=None, napaka=None)
 
 
 
 
 @bottle.get('/igralec/:x/')
-def ekipa_get(x):
+@bottle.get('/igralec/:x/?username="username"')
+def igralec_get(x):
     cur.execute("SELECT ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa FROM statistika WHERE statistika.ime = %s", [str(x)])
     stat = cur.fetchall()
-    napaka='napaka'
-    return bottle.template('igralec.html', x=x, statistika=stat, username='', napaka=None)
-
-
-@bottle.post("/igralec/:x")
-def lastniki_post():
-     username=get_user()
-
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('igralec.html', x=x, statistika=stat, username=username, napaka=None)
+    else:
+        return bottle.template('igralec.html',x=x, statistika=stat, username=None, napaka=None)
 
 
 ###
@@ -275,45 +261,45 @@ def lastniki_post():
 
 
 @bottle.get('/uspesni_lastniki/')
-def lastniki_get():
+@bottle.get('uspesni_lastniki/?username="username"')
+def uspesni_lastniki_get():
     cur.execute("SELECT lastnik.ime, lastnik.premozenje, ekipa.zmage, ekipa.ime as ekipa FROM lastnik JOIN ekipa ON lastnik.ekipa=ekipa.kratica WHERE ekipa.zmage>42 ORDER BY ekipa.zmage desc;")
     lastniki = cur.fetchall()
-    napaka='napaka'
-    return bottle.template('uspesni_lastniki.html', seznam_lastnikov=lastniki, username = '', napaka=None)
-
-@bottle.post("/uspesni_lastniki/")
-def lastniki_post():
-    username=get_user()
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('uspesni_lastniki.html', seznam_lastnikov=lastniki, username=username, napaka=None)
+    else:
+        return bottle.template('uspesni_lastniki.html', seznam_lastnikov=lastniki, username=None, napaka=None)
 
 
 
 
 
 @bottle.get('/uspesni_igralci/')
-def igralci_get():
+@bottle.get('/uspesni_igralci/?username="username"')
+def uspesni_igralci_get():
     cur.execute("SELECT ime, ekipa, stevilo_tekem, tocke, blokade, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk FROM statistika WHERE tocke/stevilo_tekem > 15 ORDER BY tocke/stevilo_tekem DESC")
     igralci = cur.fetchall()
-    napaka='napaka'
-    return bottle.template('uspesni_igralci.html', seznam_igralcev=igralci, username = '', napaka=None)
-
-@bottle.post("/uspesni_igralci/")
-def igralci_post():
-    username=get_user()
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('uspesni_igralci.html', seznam_lastnikov=lastniki, username=username, napaka=None)
+    else:
+        return bottle.template('uspesni_igralci.html', seznam_lastnikov=lastniki, username=None, napaka=None)
 
 
 
 
 
 @bottle.get('/dvojni_dvojcki/')
+@bottle.get('/dvojni_dvojcki/?username="username"')
 def lastniki_get():
     cur.execute("SELECT ime, ekipa, ROUND(1.0*tocke / stevilo_tekem, 2), ROUND(1.0*podaje / stevilo_tekem, 2), ROUND(1.0*(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem, 2) FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 OR tocke/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 OR podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 ORDER BY tocke/stevilo_tekem DESC")
     dvojcek = cur.fetchall()
-    napaka='napaka'
-    return bottle.template('dvojni_dvojcki.html', dvojni_dvojcek=dvojcek, username = '', napaka=None)
-
-@bottle.post("/dvojni_dvojcki/")
-def lastniki_post():
-    username=get_user()
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('dvojni_dvojcki.html', dvojni_dvojcek=dvojcek, username=username, napaka=None)
+    else:
+        return bottle.template('dvojni_dvojcki.html', dvojni_dvojcek=dvojcek, username=None, napaka=None)
 
 
 
@@ -323,13 +309,11 @@ def lastniki_post():
 def lastniki_get():
     cur.execute("SELECT ime, ekipa, ROUND(1.0*tocke / stevilo_tekem, 2), ROUND(1.0*podaje / stevilo_tekem, 2), ROUND(1.0*(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem, 2) FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 ORDER BY tocke/stevilo_tekem DESC")
     trojni = cur.fetchall()
-    napaka='napaka'
-    return bottle.template('trojni_dvojcki.html', trojni_dvojcek=trojni, username = '', napaka=None)
-
-@bottle.post("/trojni_:dvojcki/")
-def lastniki_post():
-    username=get_user()
-
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('trojni_dvojcki.html', trojni_dvojcek=trojni, username=username, napaka=None)
+    else:
+        return bottle.template('trojni_dvojcki.html', trojni_dvojcek=trojni, username=None, napaka=None)
 
 ##################################################################
 

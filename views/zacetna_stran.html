@@ -67,25 +67,41 @@
         <img class="bd-placeholder-img rounded-circle" width="160" height="160" src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/Slike/zoga.jpg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/></img>
         <h2>USPEŠNI LASTNIKI</h2>
         <p>Seznam lastnikov ekip z vsaj 50% izkupičkom zmag.</p>
-        <p><a class="btn btn-secondary" href="/uspesni_lastniki/" role="button">Več &raquo;</a></p>
+        % if username:
+            <p><a class="btn btn-secondary" href="/uspesni_lastniki/?username={{username}}" role="button">Več &raquo;</a></p>
+        % else:
+            <p><a class="btn btn-secondary" href="/uspesni_lastniki/" role="button">Več &raquo;</a></p>
+        % end
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
         <img class="bd-placeholder-img rounded-circle" width="160" height="160" src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/Slike/zoga.jpg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/></img>
         <h2>NAJBOLJŠI STRELCI</h2>
         <p>Seznam igralcev, ki v povprečju na tekmo dosegajo več kot 15 točk.</p>
-        <p><a class="btn btn-secondary" href="/uspesni_igralci/"" role="button">Več &raquo;</a></p>
+        % if username:
+            <p><a class="btn btn-secondary" href="/uspesni_igralci/?username={{username}}" role="button">Več &raquo;</a></p>
+        % else:
+            <p><a class="btn btn-secondary" href="/uspesni_igralci/" role="button">Več &raquo;</a></p>
+        % end
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
         <img class="bd-placeholder-img rounded-circle" width="160" height="160" src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/Slike/zoga.jpg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/></img>
         <h2>DVOJNI DVOJČKI</h2>
         <p>Dvojni dvojček je košarkarski dosežek, kjer igralec na eni tekmi doseže dvomestno število v dveh od naslednjih petih prvin: točke, skoki, asistence, ukradene žoge in blokade. Največkrat se doseže s točkami in s skoki ter točkami in asistencami. Poglej si seznam igralcev, ki v povprečju na tekmo dosegajo dvojnega dvojčka.</p>
-        <p><a class="btn btn-secondary" href="/dvojni_dvojcki/" role="button">Več &raquo;</a></p>
+        % if username:
+            <p><a class="btn btn-secondary" href="/dvojni_dvojcki/?username={{username}}" role="button">Več &raquo;</a></p>
+        % else:
+            <p><a class="btn btn-secondary" href="/dvojni_dvojcki/" role="button">Več &raquo;</a></p>
+        % end
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
         <img class="bd-placeholder-img rounded-circle" width="160" height="160" src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/Slike/zoga.jpg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/></img>
         <h2>TROJNI DVOJČKI</h2>
         <p>Trojni dvojček je košarkarski dosežek, kjer igralec na eni tekmi doseže dvomestno število v treh od naslednjih petih prvin: točke, skoki, asistence, ukradene žoge in blokade. Največkrat se doseže s točkami, skoki in asistencami. Poglej si seznam igralcev, ki v povprečju na tekmo dosegajo trojnega dvojčka.</p>
-        <p><a class="btn btn-secondary" href="/trojni_dvojcki/" role="button">Več &raquo;</a></p>
+        % if username:
+            <p><a class="btn btn-secondary" href="/trojni_dvojcki/?username={{username}}" role="button">Več &raquo;</a></p>
+        % else:
+            <p><a class="btn btn-secondary" href="/trojni_dvojcki/" role="button">Več &raquo;</a></p>
+        % end
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
 
