@@ -181,16 +181,16 @@ def igralci_post():
             c.execute("SELECT * FROM igralec WHERE ime IN %(popravljena_beseda)s", {'popravljena_beseda': tuple(popravljena_beseda)})
             igralci = c.fetchall()
             if check_user(username, prijavljen):
-                return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Verjetno ste mislili eno izmed nadlednjih imen: {}".format(str(popravljena_beseda)))
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Verjetno ste mislili eno izmed nadlednjih imen:")
             else:
-                return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Verjetno ste mislili eno izmed naslednjih imen: {}".format(str(popravljena_beseda)))
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Verjetno ste mislili eno izmed naslednjih imen:")
         else:
             c.execute("SELECT ime, pozicija, starost FROM igralec")
             igralci = c.fetchall()
             if check_user(username, prijavljen):
-                return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Burek si")
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Napačen vnos, poskusi še enkrat.")
             else:
-                return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Burek si")
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Napačen vnos, poskusi še enkrat.")
     # if popravi_besedo(iskana_beseda):
 
 
@@ -349,7 +349,7 @@ def popravi_besedo(beseda):
         slovar_ujemanj[ime] = ujemanja_crk(ime, beseda)
     ustrezne = []
     for key, value in slovar_ujemanj.items():
-        if value > 4:
+        if value > 5:
             ustrezne.append(key)
     print(slovar_ujemanj)
     # Program bo vrnil False, če bo razlika prevelika
