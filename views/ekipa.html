@@ -76,7 +76,11 @@
                 <td>{{stevilo_zadetih_trojk}}</td>
                 <td>{{stevilo_metov_iz_igre}}</td>
                 <td>{{stevilo_zadetih_metov_iz_igre}}</td>
-                <td>{{placa}}</td>
+                %if placa != None:
+                    <td>{{f'{placa:,}'}}.00 $</td>
+                %else:
+                    <td>{{placa}}</td>
+                %end
               </tr>
             %end
             </tbody>
