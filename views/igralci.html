@@ -32,18 +32,20 @@
            <thead class="thead-light">
             <tr>
                <th scope="col">Ime</th>
+               <th scope="col">Ekipa</th>
                <th scope="col">Pozicija</th>
                <th scope="col">Starost</th>
             </tr>
             </thead>
             <tbody>
-            %for (ime,pozicija,starost) in seznam_igralcev:
+            %for (ime,pozicija,starost,ekipa) in seznam_igralcev:
               <tr>
                 % if username:
                     <td><a href="/igralec/{{ime}}/?username={{username}}">{{ime}}</a></td>
                 % else:
                     <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
                 % end
+                <td>{{ekipa}}<img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{ekipa}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></td>
                 <td>{{pozicija}}</td>
                 <td>{{starost}}</td>
               </tr>

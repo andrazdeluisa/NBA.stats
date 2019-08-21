@@ -151,7 +151,7 @@ def ekipe_get():
 def igralci_get():
     #if searchon:
     #    
-    cur.execute("SELECT ime, pozicija, starost FROM igralec")
+    cur.execute("SELECT ime, pozicija, starost, ekipa FROM igralec FULL JOIN statistika USING (ime)")
     igralci = cur.fetchall()
     username = bottle.request.query.username
     if check_user(username, prijavljen):
