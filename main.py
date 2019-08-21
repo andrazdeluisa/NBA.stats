@@ -263,7 +263,7 @@ def igralec_get(x):
 @bottle.get('/razvrsti/')
 @bottle.get('/razvrsti/?username="username"')
 def urazvrsti_get():
-    cur.execute("SELECT ime, ekipa, stevilo_tekem, tocke, blokade, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk FROM statistika ORDER BY tocke/stevilo_tekem DESC")
+    cur.execute("SELECT ime, ekipa, stevilo_tekem, tocke, blokade, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk FROM statistika ORDER BY ime ASC")
     razvrsti = cur.fetchall()
     username = bottle.request.query.username
     if check_user(username, prijavljen):
