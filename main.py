@@ -175,14 +175,15 @@ def igralci_post():
         else:
             return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka=None)
     else:
+        # popravljena_beseda je list imen, ki so blizu s podano besedo
         popravljena_beseda = popravi_besedo(iskana_beseda)
         if popravljena_beseda != False:
-            c.execute("SELECT * FROM igralec WHERE ime=%s", [popravljena_beseda])
+            c.execute("SELECT * FROM igralec WHERE ime IN %(popravljena_beseda)s", {'popravljena_beseda': tuple(popravljena_beseda)})
             igralci = c.fetchall()
             if check_user(username, prijavljen):
-                return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Verjetno ste mislili {}".format(popravljena_beseda))
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Verjetno ste mislili eno izmed nadlednjih imen: {}".format(str(popravljena_beseda)))
             else:
-                return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Verjetno ste mislili {}".format(popravljena_beseda))
+                return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Verjetno ste mislili eno izmed naslednjih imen: {}".format(str(popravljena_beseda)))
         else:
             c.execute("SELECT ime, pozicija, starost FROM igralec")
             igralci = c.fetchall()
@@ -328,24 +329,44 @@ def popravi_besedo(beseda):
     for igralec in seznam:
         imena.append(igralec[0])
     # Ustvarili bomo slovar, v katerem bo stevilo razlicnih znakov, glede na podano besedo
-    slovar_diferenc = {}
+    slovar_ujemanj = {}
     for ime in imena:
-        slovar_diferenc[ime] = diference_crk(ime, beseda)
-    najmanjsa = min(slovar_diferenc, key=slovar_diferenc.get)
+        slovar_ujemanj[ime] = ujemanja_crk(ime, beseda)
+    ustrezne = []
+    for key, value in slovar_ujemanj.items():
+        if value > 4:
+            ustrezne.append(key)
+    print(slovar_ujemanj)
     # Program bo vrnil False, če bo razlika prevelika
-    if slovar_diferenc[najmanjsa] <= 3:
-        return najmanjsa
+    if ustrezne != []:
+        return ustrezne
     else:
         return False
 
-def diference_crk(beseda1, beseda2):
+def ujemanja_crk(beseda1, beseda2):
     # Funkcija izracuna stevilo znakov, v katerih se crki razlikujeta
-    dolzina = min(len(beseda1), len(beseda2))
-    diferenca = 0
+    dolzina = max(len(beseda1), len(beseda2))
+    if len(beseda1) < dolzina:
+        beseda1 = beseda1 + ((dolzina - len(beseda1))*"_")
+    if len(beseda2) < dolzina:
+        beseda2 = beseda2 + ((dolzina - len(beseda2))*"_")
+    ujemanja = {}
     for i in range(dolzina):
-        if beseda1[i] != beseda2[i]:
-            diferenca+=1
-    return diferenca
+        if beseda2[i] in beseda1 or beseda2[i] in beseda1.lower():
+            niz = beseda2[i]
+            dolzina_niza = 1
+            while niz in beseda1 or niz in beseda1.lower():
+                if i + dolzina_niza < dolzina:
+                    niz = niz + beseda2[i + dolzina_niza]
+                    dolzina_niza+=1
+                else:
+                    break
+            ujemanja[i] = dolzina_niza
+    if ujemanja != {}:
+        najvecja = max(ujemanja, key=ujemanja.get)
+    else:
+        return 0
+    return ujemanja[najvecja]
 
 
 ###############################################

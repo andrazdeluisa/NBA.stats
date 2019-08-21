@@ -16,7 +16,7 @@
     <h1>Lastniki</h1>
     <div id="wrapper" style="height:700px;overflow-y:auto;overflow-y:auto;">
         <table class="table table-bordered table-hover">
-           <thead class="thead-light">
+           <thead class="thead-light fixedHeader">
             <tr>
                <th scope="col">Ime</th>
                <th scope="col">Ekipa</th>
@@ -28,7 +28,7 @@
               <tr>
                  <td>{{ime}}</td>
                  <td>{{ekipa}}</td>
-                 <td>{{premozenje}}</td>
+                 <td>{{f'{premozenje:,}'}}.00 $</td>
               </tr>
             %end
             </tbody>
