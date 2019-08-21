@@ -20,18 +20,12 @@
     <h1>{{x}}</h1>
     </div>
 
-    <div>
-    %for (ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa) in statistika:
-        <div class="col-md-5">
-            <img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{ekipa}}.png" width="50" height="50" role="img" alt="Logo"\>
-        </div>
-    %end
-    </div>
 
     <div id="wrapper" style="height:700px;overflow-y:auto;overflow-y:auto;">
         <table class="table table-bordered table-hover">
             <thead class="thead-light">
                 <tr>
+                    <th scope="col">Ekipa</th>
                     <th scope="col">Število tekem</th>
                     <th scope="col">Začetna postava</th>
                     <th scope="col">Minutaža</th>
@@ -46,6 +40,11 @@
             <tbody>
             %for (ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa) in statistika:
               <tr>
+                 % if ekipa != 'ZTOT':
+                    <td>{{ekipa}}<img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{ekipa}}.png" width="20" height="20" role="img" align="right" alt="Logo"\></td>
+                 %else:
+                    <td>Skupaj</td>
+                 %end
                  <td>{{stevilo_tekem}}</td>
                  <td>{{zacetna_postava}}</td>
                  <td>{{minutaza}}</td>
@@ -93,7 +92,7 @@
         </table>
         <p> </p>
         <p> </p>
-        <h3>Statistika:</h3>
+        <h3>Statistika celotne sezone:</h3>
         <p>Minutaža: {{round(minutaza / stevilo_tekem, 2)}}</p>
         <p>Točke: {{round(tocke / stevilo_tekem, 2)}}</p>
         <p>Podaje: {{round(podaje / stevilo_tekem, 2)}}</p>

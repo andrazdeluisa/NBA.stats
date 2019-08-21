@@ -16,6 +16,7 @@
    
     <h2>Igralci</h2> 
 
+  Igralci, ki so med sezono menjali ekipo, so v tabeli našteti za vsako ekipo posebej. S klikom na igralca se odprejo podatki za vse ekipe, pri katerih je igral. 
     <!-- Search form -->
     <form id ="wrapper" class="form-inline" method="post">
       <input class="form-control form-control-sm mr-3 w-25" type="text" placeholder="Išči" aria-label="Search" name="search" style="height:37px;">
@@ -39,16 +40,18 @@
             </thead>
             <tbody>
             %for (ime,pozicija,starost,ekipa) in seznam_igralcev:
-              <tr>
-                % if username:
-                    <td><a href="/igralec/{{ime}}/?username={{username}}">{{ime}}</a></td>
-                % else:
-                    <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
-                % end
-                <td>{{ekipa}}<img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{ekipa}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></td>
-                <td>{{pozicija}}</td>
-                <td>{{starost}}</td>
-              </tr>
+              %if ekipa != 'ZTOT':
+                <tr>
+                  % if username:
+                      <td><a href="/igralec/{{ime}}/?username={{username}}">{{ime}}</a></td>
+                  % else:
+                      <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
+                  % end                 
+                  <td>{{ekipa}}<img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{ekipa}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></td>
+                  <td>{{pozicija}}</td>
+                  <td>{{starost}}</td>
+                </tr>
+              %end
             %end
             </tbody>
         </table>
