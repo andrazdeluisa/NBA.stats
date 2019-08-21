@@ -1,0 +1,63 @@
+%rebase('base.html', naslov='Razvrsti')
+
+<style type="text/css">
+    body {
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        background-image: url('bg.jpg');
+    }
+    #wrapper {
+        width: 80%;
+        margin: 60px auto 0px auto;
+        padding: 20px 20px 20px 20px;
+</style>
+
+<div id="wrapper" class="row mb-2 no-gutters border rounded overflow-hidden shadow-sm h-md-600 position-relative" style="float:left; width:100%; border:1px solid; padding: 20px;">
+    <h3>Izberi, kako želiš razvrstiti igralce (po točkah, podajah, skokih, blokadah ali po uspešnosti metov), in jih med sabo primerjaj.</h3>
+    <div id = "wrapper" style="height:700px;overflow-y:auto;overflow-y:auto;">
+        <table class="table table-bordered table-hover">
+           <thead class="thead-light">
+            <tr>
+               <th scope="col">Ime</th>
+               <th scope="col">Ekipa</th>
+               <th scope="col">Točke</th>
+               <th scope="col">Podaje</th>
+               <th scope="col">Skoki</th>
+               <th scope="col">Blokade</th>
+               <th scope="col">Prosti meti %</th>
+               <th scope="col">Met iz igre %</th>
+               <th scope="col">Met za 3 %</th>
+            </tr>
+            </thead>
+            <tbody>
+            %for (ime, ekipa, stevilo_tekem, tocke, blokade, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk) in razvrsti:
+              <tr>
+                %if stevilo_tekem != 0:
+                    <td>{{ime}}</td>
+                    <td>{{ekipa}} <img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{ekipa}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></td>
+                    <td>{{round(tocke / stevilo_tekem, 2)}}</td>
+                    <td>{{round(podaje / stevilo_tekem, 2)}}</td>
+                    <td>{{round((skoki_v_obrambi + skoki_v_napadu) / stevilo_tekem, 2)}}</td>
+                    <td>{{round(blokade / stevilo_tekem, 2)}}</td>
+                %end
+
+                %if stevilo_prostih_metov != 0:
+                    <td>{{round((stevilo_zadetih_prostih_metov * 100) / stevilo_prostih_metov, 2)}} %</td>
+                %end
+                
+                %if stevilo_metov_iz_igre != 0:
+                    <td>{{round((stevilo_zadetih_metov_iz_igre * 100) / stevilo_metov_iz_igre, 2)}} %</td>
+                %end 
+
+                %if stevilo_trojk != 0:
+                    <td>{{round((stevilo_zadetih_trojk * 100) / stevilo_trojk, 2)}} %</td>
+                %else:
+                    <td>{{0}}</td>
+                %end
+              </tr>
+            %end
+            </tbody>
+        </table>
+    </div>
+  </div>
+</div>

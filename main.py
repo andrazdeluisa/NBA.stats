@@ -260,6 +260,21 @@ def igralec_get(x):
 # ZANIMIVOSTI
 
 
+@bottle.get('/razvrsti/')
+@bottle.get('/razvrsti/?username="username"')
+def urazvrsti_get():
+    cur.execute("SELECT ime, ekipa, stevilo_tekem, tocke, blokade, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk FROM statistika ORDER BY tocke/stevilo_tekem DESC")
+    razvrsti = cur.fetchall()
+    username = bottle.request.query.username
+    if check_user(username, prijavljen):
+        return bottle.template('razvrsti.html', razvrsti=razvrsti, username=username, napaka=None)
+    else:
+        return bottle.template('razvrsti.html', razvrsti=razvrsti, username=None, napaka=None)
+
+
+
+
+    
 @bottle.get('/uspesni_lastniki/')
 @bottle.get('uspesni_lastniki/?username="username"')
 def uspesni_lastniki_get():
