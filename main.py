@@ -349,7 +349,7 @@ def popravi_besedo(beseda):
         slovar_ujemanj[ime] = ujemanja_crk(ime, beseda)
     ustrezne = []
     for key, value in slovar_ujemanj.items():
-        if value > 5:
+        if value > 4:
             ustrezne.append(key)
     print(slovar_ujemanj)
     # Program bo vrnil False, če bo razlika prevelika
