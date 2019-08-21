@@ -81,14 +81,18 @@
           % end
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="/lastniki/">Lastniki<span class="sr-only">(current)</span></a>
+          % if username:
+            <a class="nav-link" href="/lastniki/?username={{username}}">Lastniki<span class="sr-only">(current)</span></a>
+          % else:
+            <a class="nav-link" href="/lastniki/">Lastniki<span class="sr-only">(current)</span></a>
+          % end
         </li>
       </ul>
       <form class="form-inline mt-2 mt-md-0">
         
         % if username:
         <li class="nav-item active">
-          <a class="text" style="color: rgb(23, 129, 13)">Pozdravljen, {{username}}!</a>
+          <a class="text" style="color: rgb(23, 129, 13)">Uporabnik: {{username}} </a>
           <a class="btn btn-outline-success my-2 my-sm-0" href="/odjava/">Odjava<span class="sr-only">(current)</span></a>
         </li>
 
