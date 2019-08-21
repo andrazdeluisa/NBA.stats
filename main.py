@@ -214,7 +214,6 @@ def trenerji_get():
 @bottle.get('/lastniki/')
 @bottle.get('/lastniki/?username="username"')
 def lastniki_get():
-
     cur.execute("SELECT ime, ekipa, premozenje FROM lastnik")
     lastniki = cur.fetchall()
     username = bottle.request.query.username
@@ -238,6 +237,7 @@ def ekipa_get(x):
         return bottle.template('ekipa.html', x=x, statistika=stat, username=username, napaka=None)
     else:
         return bottle.template('ekipa.html',x=x, statistika=stat, username=None, napaka=None)
+
 
 
 
@@ -282,9 +282,9 @@ def uspesni_igralci_get():
     igralci = cur.fetchall()
     username = bottle.request.query.username
     if check_user(username, prijavljen):
-        return bottle.template('uspesni_igralci.html', seznam_lastnikov=lastniki, username=username, napaka=None)
+        return bottle.template('uspesni_igralci.html', seznam_igralcev=igralci, username=username, napaka=None)
     else:
-        return bottle.template('uspesni_igralci.html', seznam_lastnikov=lastniki, username=None, napaka=None)
+        return bottle.template('uspesni_igralci.html', seznam_igralcev=igralci, username=None, napaka=None)
 
 
 
