@@ -51,12 +51,20 @@ def main():
         najljubsa = cur.fetchall()
         try:
             najljubsa = najljubsa[0][0]
+            cur.execute("SELECT ime, zmage, porazi FROM ekipa WHERE ekipa.kratica = %s", [str(najljubsa)])
+            najljubsa_ime, zmage, porazi = cur.fetchall()[0]
+            rezultat = str(zmage) + " - " + str(porazi)
+            cur.execute("SELECT ime FROM lastnik WHERE lastnik.ekipa = %s", [str(najljubsa)])
+            lastnik = cur.fetchall()[0][0]
         except:
             najljubsa = None
+            najljubsa_ime = None
+            lastnik = None
+            rezultat = None
     if check_user(username, prijavljen):
-        return bottle.template("zacetna_stran.html", username=username, najljubsa=najljubsa)
+        return bottle.template("zacetna_stran.html", username=username, najljubsa=najljubsa, lastnik=lastnik, rezultat=rezultat, najljubsa_ime=najljubsa_ime)
     else:
-        return bottle.template("zacetna_stran.html", username=None, najljubsa=None)
+        return bottle.template("zacetna_stran.html", username=None, najljubsa=None, lastnik=None, rezultat=None, najljubsa_ime=None)
 
 #############################################################################################################
 

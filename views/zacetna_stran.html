@@ -119,18 +119,20 @@
             % if najljubsa:
                 <img class="bd-placeholder-img rounded-circle" width="160" height="160" src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{najljubsa}}.png" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/></img>
                 <h2>NAJLJUBŠA EKIPA</h2>
-                <p>damo kšen podatek o {{najljubsa}}?</p>
+                <p>{{najljubsa_ime}}</p>
+                <p>Lastnik: {{lastnik}}</p>
+                <p>Rezultat: {{rezultat}}</p>
                 <a class="btn btn-secondary" href="/ekipa/{{najljubsa}}/?username={{username}}" role="button">Več &raquo;</a>
             % else:
                 <img class="bd-placeholder-img rounded-circle" width="160" height="160" src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/Slike/zoga.jpg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/></img>
                 <h2>NAJLJUBŠA EKIPA</h2>
-                <p>Nimaš najljubše ekipe?</p>
+                <p>Nimaš najljubše ekipe? Izberi jo na povezavi!</p>
                 <a class="btn btn-secondary" href="/ekipe/?username={{username}}" role="button">Več &raquo;</a>
             % end
         % else:
             <img class="bd-placeholder-img rounded-circle" width="160" height="160" src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/Slike/zoga.jpg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/></img>
             <h2>NAJLJUBŠA EKIPA</h2>
-            <p>Prijavljeni uporabniki lahko nastavijo najljubšo ekipo.</p>
+            <p>Prijavljeni uporabniki si lahko izberejo najljubšo ekipo.</p>
         % end
       </div><!-- /.col-lg-4 -->
     </div><!-- /.row -->
