@@ -46,10 +46,18 @@ def static(filename):
 @bottle.route('/?username="username"')
 def main():
     username = bottle.request.query.username
+    if username:
+        cur.execute("SELECT najljubsa_ekipa FROM uporabnik WHERE uporabnik.username = %s", [str(username)])
+        najljubsa = cur.fetchall()
+        try:
+            najljubsa = najljubsa[0][0]
+        except:
+            najljubsa = None
     if check_user(username, prijavljen):
-        return bottle.template("zacetna_stran.html", username=username)
+        return bottle.template("zacetna_stran.html", username=username, najljubsa=najljubsa)
     else:
-        return bottle.template("zacetna_stran.html", username=None)
+        return bottle.template("zacetna_stran.html", username=None, najljubsa=None)
+
 #############################################################################################################
 
 @bottle.get("/prijava/")
@@ -234,10 +242,32 @@ def ekipa_get(x):
     cur.execute("SELECT * FROM statistika WHERE statistika.ekipa = %s", [str(x)])
     stat = cur.fetchall()
     username = bottle.request.query.username
+    if username:
+        cur.execute("SELECT najljubsa_ekipa FROM uporabnik WHERE uporabnik.username = %s", [str(username)])
+        najljubsa = cur.fetchall()
+        try:
+            najljubsa = najljubsa[0][0]
+        except:
+            najljubsa = None
     if check_user(username, prijavljen):
-        return bottle.template('ekipa.html', x=x, statistika=stat, username=username, napaka=None)
+        return bottle.template('ekipa.html', x=x, statistika=stat, username=username, najljubsa=najljubsa, napaka=None)
     else:
-        return bottle.template('ekipa.html',x=x, statistika=stat, username=None, napaka=None)
+        return bottle.template('ekipa.html', x=x, statistika=stat, username=None, najljubsa=None, napaka=None)
+
+
+
+
+@bottle.post('/ekipa/:x/')
+@bottle.post('ekipa/:x/?username="username"')
+def ekipa_post(x):
+    cur.execute("SELECT * FROM statistika WHERE statistika.ekipa = %s", [str(x)])
+    stat = cur.fetchall()
+    username = bottle.request.query.username
+    cur.execute("UPDATE uporabnik SET najljubsa_ekipa=%s WHERE uporabnik.username = %s", (str(x), str(username)))
+    if check_user(username, prijavljen):
+        return bottle.template('ekipa.html', x=x, statistika=stat, username=username, najljubsa=x, napaka=None)
+    else:
+        return bottle.template('ekipa.html', x=x, statistika=stat, username=None, najljubsa=None, napaka=None)
 
 
 
