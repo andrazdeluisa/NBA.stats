@@ -165,7 +165,7 @@ def igralci_post():
     # Search bar bo implementiran tako, da bo probalo samo popravit, če se uporabnik zmoti v par črkah
     iskana_beseda = bottle.request.forms.search
     c = baza.cursor()
-    c.execute("SELECT * FROM igralec WHERE ime=%s", [iskana_beseda])
+    c.execute("SELECT ime, pozicija, starost, ekipa FROM igralec FULL JOIN statistika USING (ime) WHERE ime=%s", [iskana_beseda])
     igralci = c.fetchall()
     username = bottle.request.query.username
     if igralci != []:
@@ -178,14 +178,14 @@ def igralci_post():
         # popravljena_beseda je list imen, ki so blizu s podano besedo
         popravljena_beseda = popravi_besedo(iskana_beseda)
         if popravljena_beseda != False:
-            c.execute("SELECT * FROM igralec WHERE ime IN %(popravljena_beseda)s", {'popravljena_beseda': tuple(popravljena_beseda)})
+            c.execute("SELECT ime, pozicija, starost, ekipa FROM igralec FULL JOIN statistika USING (ime) WHERE ime IN %(popravljena_beseda)s", {'popravljena_beseda': tuple(popravljena_beseda)})
             igralci = c.fetchall()
             if check_user(username, prijavljen):
                 return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Verjetno ste mislili eno izmed nadlednjih imen:")
             else:
                 return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Verjetno ste mislili eno izmed naslednjih imen:")
         else:
-            c.execute("SELECT ime, pozicija, starost FROM igralec")
+            c.execute("SELECT ime, pozicija, starost, ekipa FROM igralec FULL JOIN statistika USING (ime)")
             igralci = c.fetchall()
             if check_user(username, prijavljen):
                 return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Napačen vnos, poskusi še enkrat.")
