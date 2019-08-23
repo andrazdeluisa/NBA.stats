@@ -45,31 +45,33 @@
             <tbody>
             %for (ime, ekipa, stevilo_tekem, tocke, blokade, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk) in razvrsti:
               <tr>
-                %if stevilo_tekem != 0:
-                    % if username:
-                        <td><a href="/igralec/{{ime}}/?username={{username}}">{{ime}}</a></td>
-                    % else:
-                        <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
-                    % end
-                    <td>{{ekipa}} <img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{ekipa}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></td>
-                    <td>{{round(tocke / stevilo_tekem, 2)}}</td>
-                    <td>{{round(podaje / stevilo_tekem, 2)}}</td>
-                    <td>{{round((skoki_v_obrambi + skoki_v_napadu) / stevilo_tekem, 2)}}</td>
-                    <td>{{round(blokade / stevilo_tekem, 2)}}</td>
-                %end
+                %if ekipa != 'ZTOT':
+                    %if stevilo_tekem != 0:
+                        % if username:
+                            <td><a href="/igralec/{{ime}}/?username={{username}}">{{ime}}</a></td>
+                        % else:
+                            <td><a href="/igralec/{{ime}}/">{{ime}}</a></td>
+                        % end
+                        <td>{{ekipa}} <img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{ekipa}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></td>
+                        <td>{{round(tocke / stevilo_tekem, 2)}}</td>
+                        <td>{{round(podaje / stevilo_tekem, 2)}}</td>
+                        <td>{{round((skoki_v_obrambi + skoki_v_napadu) / stevilo_tekem, 2)}}</td>
+                        <td>{{round(blokade / stevilo_tekem, 2)}}</td>
+                    %end  
 
-                %if stevilo_prostih_metov != 0:
-                    <td>{{round((stevilo_zadetih_prostih_metov * 100) / stevilo_prostih_metov, 2)}} %</td>
-                %end
-                
-                %if stevilo_metov_iz_igre != 0:
-                    <td>{{round((stevilo_zadetih_metov_iz_igre * 100) / stevilo_metov_iz_igre, 2)}} %</td>
-                %end 
+                    %if stevilo_prostih_metov != 0:
+                        <td>{{round((stevilo_zadetih_prostih_metov * 100) / stevilo_prostih_metov, 2)}} %</td>
+                    %end
+                    
+                    %if stevilo_metov_iz_igre != 0:
+                        <td>{{round((stevilo_zadetih_metov_iz_igre * 100) / stevilo_metov_iz_igre, 2)}} %</td>
+                    %end 
 
-                %if stevilo_trojk != 0:
-                    <td>{{round((stevilo_zadetih_trojk * 100) / stevilo_trojk, 2)}} %</td>
-                %else:
-                    <td>{{0}}</td>
+                    %if stevilo_trojk != 0:
+                        <td>{{round((stevilo_zadetih_trojk * 100) / stevilo_trojk, 2)}} %</td>
+                    %else:
+                        <td>{{0}}</td>
+                    %end
                 %end
               </tr>
             %end
