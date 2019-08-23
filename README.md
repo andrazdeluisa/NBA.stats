@@ -8,4 +8,3 @@ Zaženi spletno stran s programsko datoteko main.py in klikom na povezavo http:/
 
 ![ER diagram](https://raw.githubusercontent.com/andrazdeluisa/ProjektOPB/master/Slike/nba.png)
 
-![ER diagram](https://raw.githubusercontent.com/andrazdeluisa/ProjektOPB/master/Slike/nba.jpg)
