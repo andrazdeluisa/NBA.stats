@@ -97,7 +97,6 @@ def login_post():
         qstr = urlencode(mydict)
         global prijavljen
         prijavljen = username
-        print(prijavljen)
         bottle.redirect('/?' + qstr)
 
 @bottle.get("/odjava/")
