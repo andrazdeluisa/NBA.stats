@@ -37,7 +37,7 @@ def check_user(username, prijavljen):
 def static(filename):
     """Splošna funkcija, ki servira vse statične datoteke iz naslova
        /static/..."""
-    static_dir = '/Static'
+    static_dir = 'static'
     return bottle.static_file(filename, root=static_dir)
 
 #############################################################################################################
