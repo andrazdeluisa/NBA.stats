@@ -35,9 +35,9 @@
             %for (ime,zmage,porazi,razmerje,kratica) in seznam_ekip:
               <tr>
                 % if username:
-                    <td><a href="/ekipa/{{kratica}}/?username={{username}}">{{kratica}} <img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{kratica}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></a></td>
+                    <td><a href="/ekipa/{{kratica}}/?username={{username}}">{{kratica}} <img src="/static/logo/{{kratica}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></a></td>
                 % else:
-                    <td><a href="/ekipa/{{kratica}}/">{{kratica}} <img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{kratica}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></a></td>
+                    <td><a href="/ekipa/{{kratica}}/">{{kratica}} <img src="/static/logo/{{kratica}}.png" width="25" height="25" role="img" align="right" alt="Logo"\></a></td>
                 % end
                  <td>{{ime}}</td>
                  <td>{{zmage}}</td>

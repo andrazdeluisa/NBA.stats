@@ -41,7 +41,7 @@
             %for (ekipa, stevilo_tekem, zacetna_postava, minutaza, tocke, osebne_napake, izgubljene_zoge, blokade, ukradene_zoge, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_prostih_metov, stevilo_zadetih_prostih_metov, stevilo_trojk, stevilo_zadetih_trojk, stevilo_metov_iz_igre, stevilo_zadetih_metov_iz_igre, placa) in statistika:
               <tr>
                  % if ekipa != 'ZTOT':
-                    <td>{{ekipa}}<img src="https://raw.githubusercontent.com/andrazdeluisa/NBA.stats/master/static/logo/{{ekipa}}.png" width="20" height="20" role="img" align="right" alt="Logo"\></td>
+                    <td>{{ekipa}}<img src="/static/logo/{{ekipa}}.png" width="20" height="20" role="img" align="right" alt="Logo"\></td>
                  %else:
                     <td>Skupaj</td>
                  %end
