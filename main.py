@@ -432,6 +432,7 @@ def popravi_besedo(beseda):
     else:
         return False
 
+
 def ujemanja_crk(beseda1, beseda2):
     # Funkcija izracuna stevilo znakov, v katerih se crki razlikujeta
     dolzina = max(len(beseda1), len(beseda2))
