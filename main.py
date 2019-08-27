@@ -213,7 +213,7 @@ def trenerji_get():
 @bottle.get('/lastniki/')
 @bottle.get('/lastniki/?username="username"')
 def lastniki_get():
-    cur.execute("SELECT ime, ekipa, premozenje FROM lastnik")
+    cur.execute("SELECT ime, ekipa, premozenje FROM lastnik ORDER BY premozenje DESC")
     lastniki = cur.fetchall()
     username = bottle.request.query.username
     if check_user(username, prijavljen):
