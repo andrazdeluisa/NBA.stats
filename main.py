@@ -140,11 +140,7 @@ def register_post():
                   (username, password))
         bottle.redirect("/prijava/")
 
-
 ###############################################
-
-
-
 
 @bottle.get('/ekipe/')
 @bottle.get('/ekipe/?username="username"')
@@ -158,14 +154,9 @@ def ekipe_get():
         return bottle.template('ekipe.html', seznam_ekip=ekipe, username=None, napaka=None)
 
 
-
-
-
 @bottle.get('/igralci/')
 @bottle.get('/igralci/?username="username"')
 def igralci_get():
-    #if searchon:
-    #    
     cur.execute("SELECT ime, pozicija, starost, ekipa FROM igralec FULL JOIN statistika USING (ime) ORDER BY (ime, ekipa)")
     igralci = cur.fetchall()
     username = bottle.request.query.username
@@ -176,7 +167,6 @@ def igralci_get():
 
 @bottle.post("/igralci/")
 def igralci_post():
-    # username=get_user()
     # Search bar bo implementiran tako, da bo probalo samo popravit, če se uporabnik zmoti v par črkah
     iskana_beseda = bottle.request.forms.search
     c = baza.cursor()
@@ -190,9 +180,9 @@ def igralci_post():
         else:
             return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka=None)
     else:
-        # popravljena_beseda je list imen, ki so blizu s podano besedo
+        # popravljena_beseda je seznam imen, ki so blizu s podano besedo
         popravljena_beseda = popravi_besedo(iskana_beseda)
-        if popravljena_beseda != False:
+        if popravljena_beseda:
             c.execute("SELECT ime, pozicija, starost, ekipa FROM igralec FULL JOIN statistika USING (ime) WHERE ime IN %(popravljena_beseda)s", {'popravljena_beseda': tuple(popravljena_beseda)})
             igralci = c.fetchall()
             if check_user(username, prijavljen):
@@ -206,10 +196,6 @@ def igralci_post():
                 return bottle.template('igralci.html', seznam_igralcev=igralci, username=username, napaka="Napačen vnos, poskusi še enkrat.")
             else:
                 return bottle.template('igralci.html', seznam_igralcev=igralci, username=None, napaka="Napačen vnos, poskusi še enkrat.")
-    # if popravi_besedo(iskana_beseda):
-
-
-
 
 
 @bottle.get('/trenerji/')
@@ -224,9 +210,6 @@ def trenerji_get():
         return bottle.template('trenerji.html', seznam_trenerjev=trenerji, username=None, napaka=None)
 
 
-
-
-
 @bottle.get('/lastniki/')
 @bottle.get('/lastniki/?username="username"')
 def lastniki_get():
@@ -237,10 +220,6 @@ def lastniki_get():
         return bottle.template('lastniki.html', seznam_lastnikov=lastniki, username=username, napaka=None)
     else:
         return bottle.template('lastniki.html', seznam_lastnikov=lastniki, username=None, napaka=None)
-
-
-
-
 
 
 @bottle.get('/ekipa/:x/')
@@ -262,8 +241,6 @@ def ekipa_get(x):
         return bottle.template('ekipa.html', x=x, statistika=stat, username=None, najljubsa=None, napaka=None)
 
 
-
-
 @bottle.post('/ekipa/:x/')
 @bottle.post('ekipa/:x/?username="username"')
 def ekipa_post(x):
@@ -277,9 +254,6 @@ def ekipa_post(x):
         return bottle.template('ekipa.html', x=x, statistika=stat, username=None, najljubsa=None, napaka=None)
 
 
-
-
-
 @bottle.get('/igralec/:x/')
 @bottle.get('/igralec/:x/?username="username"')
 def igralec_get(x):
@@ -289,14 +263,11 @@ def igralec_get(x):
     if check_user(username, prijavljen):
         return bottle.template('igralec.html', x=x, statistika=stat, username=username, napaka=None)
     else:
-        return bottle.template('igralec.html',x=x, statistika=stat, username=None, napaka=None)
-
+        return bottle.template('igralec.html', x=x, statistika=stat, username=None, napaka=None)
 
 ###
 
-
 # ZANIMIVOSTI
-
 
 @bottle.get('/razvrsti/')
 @bottle.get('/razvrsti/?username="username"')
@@ -313,7 +284,6 @@ def razvrsti_get():
 
 @bottle.post("/razvrsti/")
 def razvrsti_post():
-    # username=get_user()
     # Search bar bo implementiran tako, da bo probalo samo popravit, če se uporabnik zmoti v par črkah
     iskana_beseda = bottle.request.forms.search
     c = baza.cursor()
@@ -327,7 +297,7 @@ def razvrsti_post():
         else:
             return bottle.template('razvrsti.html', razvrsti=igralci, username=None, napaka=None)
     else:
-        # popravljena_beseda je list imen, ki so blizu s podano besedo
+        # popravljena_beseda je seznam imen, ki so blizu s podano besedo
         popravljena_beseda = popravi_besedo(iskana_beseda)
         if popravljena_beseda != False:
             c.execute("SELECT ime, ekipa, stevilo_tekem, tocke, blokade, podaje, skoki_v_obrambi, skoki_v_napadu, stevilo_zadetih_prostih_metov, stevilo_prostih_metov, stevilo_zadetih_metov_iz_igre, stevilo_metov_iz_igre, stevilo_zadetih_trojk, stevilo_trojk FROM statistika WHERE ime IN %(popravljena_beseda)s", {'popravljena_beseda': tuple(popravljena_beseda)})
@@ -343,10 +313,6 @@ def razvrsti_post():
                 return bottle.template('razvrsti.html', razvrsti=igralci, username=username, napaka="Napačen vnos, poskusi še enkrat.")
             else:
                 return bottle.template('razvrsti.html', razvrsti=igralci, username=None, napaka="Napačen vnos, poskusi še enkrat.")
-    # if popravi_besedo(iskana_beseda):
-
-
-
 
     
 @bottle.get('/uspesni_lastniki/')
@@ -361,9 +327,6 @@ def uspesni_lastniki_get():
         return bottle.template('uspesni_lastniki.html', seznam_lastnikov=lastniki, username=None, napaka=None)
 
 
-
-
-
 @bottle.get('/uspesni_igralci/')
 @bottle.get('/uspesni_igralci/?username="username"')
 def uspesni_igralci_get():
@@ -374,9 +337,6 @@ def uspesni_igralci_get():
         return bottle.template('uspesni_igralci.html', seznam_igralcev=igralci, username=username, napaka=None)
     else:
         return bottle.template('uspesni_igralci.html', seznam_igralcev=igralci, username=None, napaka=None)
-
-
-
 
 
 @bottle.get('/dvojni_dvojcki/')
@@ -391,9 +351,6 @@ def lastniki_get():
         return bottle.template('dvojni_dvojcki.html', dvojni_dvojcek=dvojcek, username=None, napaka=None)
 
 
-
-
-
 @bottle.get('/trojni_dvojcki/')
 def lastniki_get():
     cur.execute("SELECT ime, ekipa, ROUND(1.0*tocke / stevilo_tekem, 2), ROUND(1.0*podaje / stevilo_tekem, 2), ROUND(1.0*(skoki_v_napadu + skoki_v_obrambi) / stevilo_tekem, 2) FROM statistika WHERE tocke/stevilo_tekem >= 10 AND podaje/stevilo_tekem >= 10 AND (skoki_v_obrambi + skoki_v_napadu)/stevilo_tekem >=10 ORDER BY tocke/stevilo_tekem DESC")
@@ -405,8 +362,6 @@ def lastniki_get():
         return bottle.template('trojni_dvojcki.html', trojni_dvojcek=trojni, username=None, napaka=None)
 
 ##################################################################
-
-
 
 def popravi_besedo(beseda):
     username = beseda
@@ -426,7 +381,7 @@ def popravi_besedo(beseda):
             ustrezne.append(key)
     print(slovar_ujemanj)
     # Program bo vrnil False, če bo razlika prevelika
-    if ustrezne != []:
+    if ustrezne:
         return ustrezne
     else:
         return False
@@ -451,7 +406,7 @@ def ujemanja_crk(beseda1, beseda2):
                 else:
                     break
             ujemanja[i] = dolzina_niza
-    if ujemanja != {}:
+    if ujemanja:
         najvecja = max(ujemanja, key=ujemanja.get)
     else:
         return 0
